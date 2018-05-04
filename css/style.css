@@ -1,0 +1,89 @@
+html {}
+
+body {
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+}
+
+#application-header {
+    width: 100%;
+    background-color: white;
+}
+
+#header-title-wrapper {}
+
+#header-tabs-wrapper {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    min-width: 200px;
+}
+
+.header-tabs {
+    display: inline-block;
+    cursor: pointer;
+    padding: 5px;
+    background-color: darkgray;
+    color: white;
+    margin: 0;
+}
+
+#header-tab-guide {}
+
+#header-tab-map {}
+
+#header-tab-sheet {}
+
+.pages {
+    position: absolute;
+    top: 50px;
+    left: 0;
+    width: 100%;
+    min-height: 400px;
+}
+
+.pages-body {}
+
+.pages-banner {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 30px;
+}
+
+#page-guide-banner {
+    background-color: rgb(187, 19, 62)
+}
+
+#page-map-banner {
+    background-color: white;
+    border-top: 2px solid black;
+    border-bottom: 2px solid black
+}
+
+#page-sheet-banner {
+    background-color: rgb(0, 33, 71)
+}
+
+#page-guide {
+    display: none;
+    background-color: white;
+}
+
+#page-guide-body {}
+
+#page-map {
+    display: none;
+    background-color: white;
+}
+
+#page-map-body {}
+
+#page-sheet {
+    display: inherit;
+    background-color: white;
+}
+
+#page-sheet-body {}

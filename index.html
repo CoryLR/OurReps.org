@@ -1,13 +1,53 @@
 <html>
-    <head>
+
+<head>
     <link rel="stylesheet" type="text/css" href="css/style.css">
 </head>
 
 <body>
 
+    <!-- Header -->
+    <div id="application-header">
+        <div id="header-title-wrapper"></div>
+        <div id="header-tabs-wrapper">
+            <div id="header-tab-guide" class="header-tabs" onclick="changePage_sheet2guide()">
+                <div>Guide</div>
+            </div>
+            <div id="header-tab-map" class="header-tabs" onclick="changePage_sheet2map()">
+                <div>Map</div>
+            </div>
+            <div id="header-tab-sheet" class="header-tabs" onclick="">
+                <div>Cheat Sheet</div>
+            </div>
+        </div>
+    </div>
 
+    <!-- Guide tab -->
+    <div id="page-guide" class="pages">
+        <div id="page-guide-body" class="pages-body">
+            <div id="page-guide-banner" class="pages-banner"></div>
+        </div>
+    </div>
+
+    <!-- Map tab-->
+    <div id="page-map" class="pages">
+        <div id="page-map-body" class="pages-body">
+            <div id="page-map-banner" class="pages-banner"></div>
+        </div>
+    </div>
+
+    <!-- Cheat Sheet tab-->
+    <div id="page-sheet" class="pages">
+        <div id="page-sheet-body" class="pages-body">
+            <div id="page-sheet-banner" class="pages-banner"></div>
+        </div>
+    </div>
+
+    <!-- Scripts-->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
     <script src="js/script.js"></script>
+
 </body>
-    
+
 </html>
