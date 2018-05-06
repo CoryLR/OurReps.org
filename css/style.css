@@ -11,36 +11,62 @@ body {
     background-color: white;
 }
 
-#header-title-wrapper {}
+#header-title-wrapper {
+    padding: 5px;
+    font: 14px/16px aerial, helvetica, sans-serif;
+}
+
+#header-title-text {
+    font-weight: 800
+}
 
 #header-tabs-wrapper {
     position: absolute;
     top: 0px;
     right: 0px;
     min-width: 200px;
+    z-index: 1000
 }
 
 .header-tabs {
     display: inline-block;
     cursor: pointer;
-    padding: 5px;
-    background-color: darkgray;
+    padding: 5px 15px;
+    height: 25px;
+    /*
+    background-color: rgb(60, 60, 60);
     color: white;
+*/
+    margin-left: -5px;
+    border-left: 2px solid black;
+    width: 100px;
+    text-align: center;
+    font: 14px/16px aerial, helvetica, sans-serif;
+}
+
+.header-tabs div {
     margin: 0;
 }
 
 #header-tab-guide {}
 
-#header-tab-map {}
+#header-tab-map {
+    /*    background-color: white;*/
+}
 
-#header-tab-sheet {}
+#header-tab-sheet {
+    color: white;
+    background-color: rgb(0, 33, 71);
+    font-weight: 800;
+}
 
 .pages {
     position: absolute;
-    top: 50px;
+    top: 30px;
     left: 0;
     width: 100%;
     min-height: 400px;
+    z-index: 1;
 }
 
 .pages-body {}
@@ -50,7 +76,8 @@ body {
     top: 0;
     left: 0;
     width: 100%;
-    height: 30px;
+    height: 50px;
+    z-index: 500;
 }
 
 #page-guide-banner {
@@ -60,7 +87,6 @@ body {
 #page-map-banner {
     background-color: white;
     border-top: 2px solid black;
-    border-bottom: 2px solid black
 }
 
 #page-sheet-banner {
@@ -77,6 +103,7 @@ body {
 #page-map {
     display: none;
     background-color: white;
+    border-bottom: 2px solid white;
 }
 
 #page-map-body {}

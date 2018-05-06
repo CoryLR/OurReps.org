@@ -5,7 +5,8 @@
     function main() {
 
         //        startPersonalizedGuide("invalid input")
-        //startPersonalizedGuide("1415 Kamehameha IV Rd Honolulu HI");
+        //startPersonalizedGuide("1601 fieldthorn drive reston va");
+        //        startPersonalizedGuide("1415 Kamehameha IV Rd Honolulu HI");
 
     };
 
