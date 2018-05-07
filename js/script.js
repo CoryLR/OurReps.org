@@ -36,6 +36,64 @@
 
     };
 
+    $("#c-btn-list-generate").click(function () {
+        generateReps_listPage_input();
+    });
+
+    function generateReps_listPage_input() {
+        var locationString = $("#c-input-list-address").val();
+        generateReps_listPage_apiPull(locationString)
+        
+    };
+    
+    function generateReps_listPage_apiPull(locationString){
+        Promise.all([
+            apiPullReps(locationString),
+            apiPullCoords(locationString)
+        ]).then(function (apiValues) {
+            $("#c-page-list-generatedReps").append(generateRepHtml(apiValues))
+
+        })
+    };
+    
+    function generateReps_listPage_fromMap(apiValues){
+        $("#c-page-list-generatedReps").append(generateRepHtml(apiValues))
+    };
+    
+    function generateRepHtml(apiValues){
+            console.log("Starting generateReps_listPage_input()");
+
+            if (true) {
+                var [repsObject, locationObject] = promiseValues;
+
+                console.log("repsObject:")
+                console.log(repsObject)
+                console.log("locationObject:")
+                console.log(locationObject)
+
+                var repHtmlStringsList = [];
+                
+                    repHtmlStringsList.push("<p>Start of Representatives</p>");
+
+                for (i_office in repsObject["offices"]) {
+                    
+                    repHtmlStringsList.push(
+                        makeOfficeHtml(repsObject, i_office)
+                    )
+                    
+//                        "<p>" + repsObject["offices"][i_office]["name"] + "</p>" +
+//                        "<br>"
+
+                };
+                
+                return repHtmlStringsList
+            };
+    };
+    
+    function makeOfficeHtml(repsObject, i_office){
+        
+    };
+
     function apiPullReps(locationString) {
         var apiFullURLString = "https://www.googleapis.com/civicinfo/v2/" +
             "representatives" +
