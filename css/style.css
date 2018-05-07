@@ -1,4 +1,6 @@
-html {}
+html {
+    background-color: white;
+}
 
 body {
     margin: 0;
@@ -6,12 +8,12 @@ body {
     overflow-x: hidden;
 }
 
-#application-header {
+#c-application-header {
     width: 100%;
     background-color: white;
 }
 
-#header-title-wrapper {
+#c-header-title-wrapper {
     padding-left: 10px;
     padding-right: 15px;
     padding-top: 10px;
@@ -19,23 +21,23 @@ body {
     font: 14px/16px aerial, helvetica, sans-serif;
 }
 
-#header-title-text {
+#c-header-title-text {
     font-weight: 800;
 }
 
-#header-title-text-OUR {
+#c-header-title-text-OUR {
     color: #981b1e
 }
 
-#header-title-text-REPS {
+#c-header-title-text-REPS {
     color: #112e51;
 }
 
-#header-title-text-ORG {
+#c-header-title-text-ORG {
     font-size: 10px !important
 }
 
-#header-tabs-wrapper {
+#c-header-tabs-wrapper {
     position: absolute;
     top: 0px;
     right: 0px;
@@ -43,102 +45,143 @@ body {
     z-index: 1000
 }
 
-.header-tabs {
+.c-header-tabs {
     display: inline-block;
     cursor: pointer;
     padding-left: 15px;
     padding-right: 15px;
     padding-top: 10px;
     padding-bottom: 4px;
-    height: 25px;
+    height: 38px;
     /*
     background-color: rgb(60, 60, 60);
     color: white;
 */
     margin-left: -5px;
     border-left: 2px solid black;
-    width: 60px;
+    width: 80px;
     text-align: center;
     font: 14px/16px aerial, helvetica, sans-serif;
 }
 
-.header-tabs div {
+.c-header-tabs div {
     margin: 0;
 }
 
-#header-tab-guide {
-    font-weight: 600;
+#c-header-tab-guide {
+    font-weight: 800;
+    color: white;
+    background-color: #981b1e;
+
 }
 
-#header-tab-map {
+#c-header-tab-map {
     /*    background-color: white;*/
     font-weight: 600;
 }
 
-#header-tab-list {
-    color: white;
-    background-color: #112e51;
-    font-weight: 800;
+#c-header-tab-list {
+    /*    color: white;*/
+    /*    background-color: #112e51;*/
+    font-weight: 600;
 }
 
-#header-tab-menu {
-    width: 10px !important;
+#c-header-tab-menu {
+    width: 38px !important;
     padding-left: 10px !important;
     padding-right: 15px !important;
     padding-top: 10px !important;
     padding-bottom: 4px !important;
+    border-right: 2px solid black
 }
 
-.pages {
+#c-header-tab-menu-dropdown {
+    margin-right: -18px;
+    margin-top: 12px;
+}
+
+.c-pages {
     position: absolute;
-    top: 38px;
+    top: 36px;
     left: 0;
     width: 100%;
     min-height: 400px;
     z-index: 1;
+    text-align: center;
 }
 
-.pages-body {}
+.c-pages-body {}
 
-.pages-banner {
-    position: absolute;
-    top: 0;
-    left: 0;
+.c-pages-banner {
     width: 100%;
     height: 50px;
     z-index: 500;
 }
 
-#page-guide-banner {
+#c-page-guide-banner {
     background-color: #981b1e
 }
 
-#page-map-banner {
+#c-page-map-banner {
     background-color: white;
     border-top: 2px solid black;
 }
 
-#page-list-banner {
-    background-color: #112e51
+#c-page-list-banner {
+    background-color: #112e51;
+    height: auto;
 }
 
-#page-guide {
-    display: none;
-    background-color: white;
-}
-
-#page-guide-body {}
-
-#page-map {
-    display: none;
-    background-color: white;
-}
-
-#page-map-body {}
-
-#page-list {
+#c-page-guide {
     display: inherit;
     background-color: white;
 }
 
-#page-list-body {}
+#c-page-guide-body {}
+
+#c-page-map {
+    display: none;
+    background-color: white;
+}
+
+#c-page-map-body {}
+
+#c-page-list {
+    display: none;
+    background-color: white;
+    /* center vertical */
+}
+
+#c-page-list-body {
+    width: 100%;
+    display: flex;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+
+}
+
+#c-page-list-content {
+    width: 980px;
+    min-height: 200px;
+    padding: 15px;
+    border: 1px solid red;
+    text-align: left;
+}
+#c-page-list-banner-body {
+    width: 100%;
+    display: flex;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    color: white;
+
+}
+
+#c-page-list-banner-content {
+    width: 980px;
+    min-height: 20px;
+    padding: 15px;
+    border: 1px solid cyan;
+    text-align: left;
+}

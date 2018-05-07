@@ -1,56 +1,92 @@
 <html>
 
 <head>
+    <link rel="stylesheet" href="lib/leaflet/leaflet.css">
+    <link rel="stylesheet" type="text/css" href="lib/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="css/style.css">
+
 </head>
 
 <body>
 
     <!-- Header -->
-    <div id="application-header">
-        <div id="header-title-wrapper">
-            <span id="header-title-text"><span id="header-title-text-OUR">OUR</span><span id="header-title-text-REPS">REPS</span>.</span><span id="header-title-text-ORG">ORG</span></div>
-        <div id="header-tabs-wrapper">
-            <div id="header-tab-guide" class="header-tabs" onclick="changePage_list2guide()">
+    <div id="c-application-header">
+        <div id="c-header-title-wrapper">
+            <span id="c-header-title-text"><span id="c-header-title-text-OUR">OUR</span><span id="c-header-title-text-REPS">REPS</span>.</span><span id="c-header-title-text-ORG">ORG</span></div>
+        <div id="c-header-tabs-wrapper">
+            <div id="c-header-tab-guide" class="c-header-tabs" onclick="">
                 <div>GUIDE</div>
             </div>
-            <div id="header-tab-map" class="header-tabs" onclick="changePage_list2map()">
+            <div id="c-header-tab-map" class="c-header-tabs" onclick="changePage_guide2map()">
                 <div>MAP</div>
             </div>
-            <div id="header-tab-list" class="header-tabs" onclick="">
+            <div id="c-header-tab-list" class="c-header-tabs" onclick="changePage_guide2list()">
                 <div>LIST</div>
             </div>
-            <div id="header-tab-menu" class="header-tabs" onclick="">
-                <div>000</div>
+            <div id="c-header-tab-menu" class="c-header-tabs" onclick="">
+                <div class="dropdown">
+                    <div class="dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                        <span class="glyphicon glyphicon-menu-hamburger"></span>
+                    </div>
+                    <ul id="c-header-tab-menu-dropdown" class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenu1">
+                        <li><a href="#">GUIDE</a></li>
+                        <li><a href="#">MAP</a></li>
+                        <li><a href="#">LIST</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="#">Resource Links</a></li>
+                        <li><a href="#">About</a></li>
+                    </ul>
+                </div>
             </div>
         </div>
     </div>
 
     <!-- Guide tab -->
-    <div id="page-guide" class="pages">
-        <div id="page-guide-body" class="pages-body">
-            <div id="page-guide-banner" class="pages-banner"></div>
+    <div id="c-page-guide" class="c-pages">
+        <div id="c-page-guide-banner" class="c-pages-banner"></div>
+        <div id="c-page-guide-body" class="c-pages-body">
+
         </div>
     </div>
 
     <!-- Map tab-->
-    <div id="page-map" class="pages">
-        <div id="page-map-body" class="pages-body">
-            <div id="page-map-banner" class="pages-banner"></div>
+    <div id="c-page-map" class="c-pages">
+        <div id="c-page-map-banner" class="c-pages-banner"></div>
+        <div id="c-page-map-body" class="c-pages-body">
         </div>
     </div>
 
-    <!-- Cheat list tab-->
-    <div id="page-list" class="pages">
-        <div id="page-list-body" class="pages-body">
-            <div id="page-list-banner" class="pages-banner"></div>
+    <!-- List tab-->
+    <div id="c-page-list" class="c-pages">
+        <div id="c-page-list-banner" class="c-pages-banner">
+            <div id="c-page-list-banner-body" class="c-pages-body">
+                <div id="c-page-list-banner-content">
+                    <h3>Representatives List</h3>
+                <form id="">
+                    <div class="form-group">
+                        <label for="">Enter Address</label>
+                        <input class="form-control" id="c-input-list-address" placeholder="Enter address">
+                        <small id="" class="form-text">Information not stored.</small>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Find Representatives</button>
+                </form>
+
+                </div>
+            </div>
+        </div>
+        <div id="c-page-list-body" class="c-pages-body">
+            <div id="c-page-list-content">
+            </div>
         </div>
     </div>
 
     <!-- Scripts-->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <script src="lib/leaflet/leaflet.js"></script>
+    <script src="lib/jquery/jquery-3.3.1.min.js"></script>
+    <script src="lib/jqueryui/jquery-ui.min.js"></script>
+    <script src="lib/bootstrap/js/bootstrap.min.js"></script>
     <script src="js/script.js"></script>
+
 
 </body>
 
