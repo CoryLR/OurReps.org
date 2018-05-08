@@ -192,6 +192,7 @@ body {
 }
 #c-page-list .repImage img {
     max-width: 50px;
+    background-color: lightgray
 }
 #c-page-list .repImageEmpty img {
     max-width: 50px;

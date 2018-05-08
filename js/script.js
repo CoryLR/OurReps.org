@@ -29,13 +29,14 @@
         ]).then(function (apiValues) {
 
             console.log(apiValues)
-                // unpack the loaded data into variables
-                //var [csvData, jsonStates] = apiValues
+            // unpack the loaded data into variables
+            //var [csvData, jsonStates] = apiValues
 
         })
 
     };
 
+    // Event Listeners
     $("#c-btn-list-generate").click(function () {
         generateReps_listPage_input();
     });
@@ -78,23 +79,81 @@
             console.log(locationObject)
 
             var repHtmlStringsList = [];
+            var officeHtml2dArray = [];
 
             repHtmlStringsList.push("<p>Start of Representatives (header)</p><br><br>");
 
             for (i_office in repsObject["offices"]) {
 
-                repHtmlStringsList.push(
-                    makeOfficeHtmlString(repsObject, i_office)
-                )
+//                repHtmlStringsList.push(
+//                    makeOfficeHtmlString(repsObject, i_office)
+//                );
+
+                officeHtml2dArray.push(
+                    [i_office, getOfficeOrder(repsObject, i_office),
+                    makeOfficeHtmlString(repsObject, i_office)]
+                );
 
                 //                        "<p>" + repsObject["offices"][i_office]["name"] + "</p>" +
                 //                        "<br>"
 
             };
 
+            officeHtml2dArray.sort(compare)
+
+            console.log(officeHtml2dArray);
+            
+            for (i in officeHtml2dArray){
+                repHtmlStringsList.push(officeHtml2dArray[i][2])
+            }
+
             return repHtmlStringsList
         };
     };
+
+    function getOfficeOrder(repsObject, i_office) {
+        //        console.log(repsObject["offices"][i_office]["name"]);
+        //        console.log(repsObject["offices"][i_office]["divisionId"]);
+        //        console.log("");
+        var divisionList = repsObject["offices"][i_office]["divisionId"].split("/");
+        console.log(divisionList);
+
+        if (
+            divisionList.length < 3 ||
+            repsObject["offices"][i_office]["name"].substr(0, 19) == "United States House" ||
+            repsObject["offices"][i_office]["name"].substr(0, 20) == "United States Senate"
+        ) {
+            return 10
+        } else if (
+            divisionList.length == 3 ||
+            repsObject["offices"][i_office]["name"].substr(0, 8) == "Governor" ||
+            divisionList.length == 4 &&
+            divisionList[3].substr(0, 4) == "sldu" ||
+            divisionList.length == 4 &&
+            divisionList[3].substr(0, 4) == "sldl"
+        ) {
+            return 20
+        } else if (
+            divisionList[3].substr(0, 6) == "county"
+        ) {
+            return 30
+        } else if (
+            divisionList[3].substr(0, 5) == "place"
+        ) {
+            return 40
+        } else {
+            return 50
+        }
+
+    };
+
+    function compare(a, b) {
+        if (a[1] < b[1])
+            return -1;
+        if (a[1] > b[1])
+            return 1;
+        return a[0]-b[0];
+    }
 
     function makeOfficeHtmlString(repsObject, i_office) {
 
@@ -102,7 +161,7 @@
         var returnVar = "";
 
         for (i_rep in officialIndicesList) {
-            console.log(repsObject["officials"][officialIndicesList[i_rep]])
+            //            console.log(repsObject["officials"][officialIndicesList[i_rep]])
 
             var officialsRepInfo = repsObject["officials"][officialIndicesList[i_rep]]
 
@@ -151,7 +210,7 @@
         }
 
     };
-    
+
     function makeRepCardString_address(officialsRepInfo) {
         if (officialsRepInfo["address"]) {
             var returnVar = "<div class='repContactAddress'>"
@@ -159,7 +218,7 @@
                 returnVar += "" +
                     "<div class='repContactaddressDiv'>" +
                     officialsRepInfo["address"][i_contactDict]["line1"] + "<br>" +
-                    ((officialsRepInfo["address"][i_contactDict]["line2"]) ? officialsRepInfo["address"][i_contactDict]["line2"] + "<br>" : "") + 
+                    ((officialsRepInfo["address"][i_contactDict]["line2"]) ? officialsRepInfo["address"][i_contactDict]["line2"] + "<br>" : "") +
                     officialsRepInfo["address"][i_contactDict]["city"] + ", " +
                     officialsRepInfo["address"][i_contactDict]["state"] + " " +
                     officialsRepInfo["address"][i_contactDict]["zip"] +
@@ -173,7 +232,7 @@
         return ""
 
     };
-    
+
     function makeRepCardString_urls(officialsRepInfo) {
         if (officialsRepInfo["urls"]) {
             var returnVar = "<div class='repContactUrls'>"
