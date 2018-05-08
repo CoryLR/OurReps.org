@@ -96,7 +96,7 @@ body {
 }
 
 #c-header-tab-menu-dropdown {
-    margin-right: -18px;
+    margin-right: -16px;
     margin-top: 12px;
 }
 
@@ -122,10 +122,6 @@ body {
     background-color: #981b1e
 }
 
-#c-page-map-banner {
-    background-color: white;
-    border-top: 2px solid black;
-}
 
 #c-page-list-banner {
     background-color: #112e51;
@@ -183,20 +179,175 @@ body {
     text-align: left;
 }
 
-#c-page-list .repImage {
-    width: 50px;
-    height: 50px;
-    overflow: hidden;
-    border-radius: 50%
-    
-}
-#c-page-list .repImage img {
-    max-width: 50px;
-    background-color: lightgray
-}
-#c-page-list .repImageEmpty img {
-    max-width: 50px;
+/*rep css for page list*/
+
+#c-page-list .repGroupTitle {
+    font-size: 32px;
+    font-weight: 600;
+    margin-top: 60px;
+    margin-bottom: 20px;
+    text-align: center;
 }
 #c-page-list .repCardWrapper {
     margin-bottom: 20px;
+    width: 100%;
+    text-align: center;
+}
+#c-page-list .repCard {
+    display: inline-block;
+    padding: 20px;
+    border-top: 2px solid black;
+/*    border-top: 2px solid #0071bc;*/
+/*
+    border: 4px solid #0071bc;
+    border-radius: 40px;
+*/
+    width: auto;
+    text-align: left;
+}
+#c-page-list .repImage {
+    width: 100px;
+    height: 100px;
+    overflow: hidden;
+    border-radius: 50%;
+    display: inline-block;
+    vertical-align:top;
+    margin-right: 20px;
+    
+}
+#c-page-list .repImage img {
+    max-width: 100px;
+    background-color: lightgray
+}
+#c-page-list .repContentWrapper {
+    display: inline-block;
+    vertical-align:top;
+}
+#c-page-list .repInfoWrapper {
+    display: inline-block;
+    vertical-align:top;
+    width: 250px
+}
+#c-page-list .repName {
+    font-weight: 600;
+}
+#c-page-list .repContactsWrapper {
+    display: inline-block;
+    vertical-align:top;
+    margin-left: 30px;
+    width: 250px;
+    overflow-wrap: break-word;
+}
+#c-page-list .repContactChannels {
+}
+#c-page-list .repOffice {
+    font-size: 22;
+    color: black;
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+
+
+/*rep css for page map*/
+
+#c-page-map-panel{
+    overflow-y: scroll;
+}
+
+#c-page-map .repGroupTitle {
+    font-size: 18px;
+    font-weight: 600;
+    margin: 10px;
+    text-align: left;
+}
+#c-page-map .repCardWrapper {
+    margin-bottom: 0px;
+    width: 100%;
+    text-align: left;
+}
+#c-page-map .repCard {
+    display: inline-block;
+    padding: 10px;
+    border-top: 2px solid black;
+/*    border-top: 2px solid #0071bc;*/
+/*
+    border: 4px solid #0071bc;
+    border-radius: 40px;
+*/
+    width: auto;
+    text-align: left;
+}
+#c-page-map .repImage {
+    width: 30px;
+    height: 30px;
+    overflow: hidden;
+    border-radius: 50%;
+    display: none;
+/*    display: inline-block;*/
+    vertical-align:top;
+    margin-right: 3px;
+    
+}
+#c-page-map .repImage img {
+    max-width: 30px;
+    background-color: lightgray
+}
+#c-page-map .repContentWrapper {
+    display: inline-block;
+    vertical-align:top;
+}
+#c-page-map .repInfoWrapper {
+    display: inline-block;
+    vertical-align:top;
+    width: 250px
+}
+#c-page-map .repName {
+    font-weight: 600;
+}
+#c-page-map .repContactsWrapper {
+    display: none;
+}
+#c-page-map .repContactPhones {
+    display: none;
+}
+#c-page-map .repContactAddress {
+    display: none;
+}
+#c-page-map .repContactChannels {
+}
+#c-page-map .repOffice {
+    font-size: 14;
+    color: black;
+    font-weight: 800;
+}
+
+
+
+#c-page-map-banner {
+    background-color: white;
+    border-top: 2px solid black;
+    border-bottom: 2px solid gray;
+    height: 30px !important;
+}
+
+#c-page-map-panel{
+    background-color: white;
+    position: absolute;
+    top: 30px;
+    left: 0;
+    width: 220px;
+    height: calc(100vh - 67px);
+}
+
+#c-page-map-mapFrameWrapper{
+    background-color: lightgray;
+    position: absolute;
+    top: 30px;
+    right: 0;
+    width: calc(100vw - 240px);
+    height: calc(100vh - 67px);
+    border-left: 2px solid gray;
+    border-right: 2px solid gray;
+    border-bottom: 2px solid gray;
 }

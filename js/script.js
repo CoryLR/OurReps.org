@@ -4,7 +4,7 @@
     // Start main JavaScript stream
     function main() {
 
-        changePage_guide2list()
+        changePage_guide2map()
 
         //        startPersonalizedGuide("invalid input")
         //startPersonalizedGuide("1601 fieldthorn drive reston va");
@@ -18,6 +18,14 @@
     var apiKey = "";
     var repsData_personalizedGuide;
     var repsData_exploreMap;
+    var groupTitles = {
+        10: "Federal Representatives",
+        20: "State Representatives",
+        30: "County Representatives",
+        40: "City Representatives",
+        50: "District Representatives",
+        60: "Other Representatives"
+    }
 
     // Declare functions
 
@@ -29,8 +37,8 @@
         ]).then(function (apiValues) {
 
             console.log(apiValues)
-            // unpack the loaded data into variables
-            //var [csvData, jsonStates] = apiValues
+                // unpack the loaded data into variables
+                //var [csvData, jsonStates] = apiValues
 
         })
 
@@ -48,17 +56,36 @@
     });
 
     function generateReps_listPage_input() {
+
         var locationString = $("#c-input-list-address").val();
         generateReps_listPage_apiPull(locationString)
 
     };
 
+    function generateReps_mapPage_input(locationString) {
+
+        generateReps_mapPage_apiPull(locationString)
+
+    };
+
     function generateReps_listPage_apiPull(locationString) {
+        $("#c-page-list-generatedReps").html("")
         Promise.all([
             apiPullReps(locationString),
             apiPullCoords(locationString)
         ]).then(function (apiValues) {
             $("#c-page-list-generatedReps").append(generateRepHtml(apiValues))
+
+        })
+    };
+
+    function generateReps_mapPage_apiPull(locationString) {
+        $("#c-page-map-generatedReps").html("")
+        Promise.all([
+            apiPullReps(locationString),
+            apiPullCoords(locationString)
+        ]).then(function (apiValues) {
+            $("#c-page-map-generatedReps").append(generateRepHtml(apiValues))
 
         })
     };
@@ -81,31 +108,39 @@
             var repHtmlStringsList = [];
             var officeHtml2dArray = [];
 
-            repHtmlStringsList.push("<p>Start of Representatives (header)</p><br><br>");
+            //            repHtmlStringsList.push("<p>Start of Representatives (header)</p><br><br>");
 
             for (i_office in repsObject["offices"]) {
-
-//                repHtmlStringsList.push(
-//                    makeOfficeHtmlString(repsObject, i_office)
-//                );
 
                 officeHtml2dArray.push(
                     [i_office, getOfficeOrder(repsObject, i_office),
                     makeOfficeHtmlString(repsObject, i_office)]
                 );
 
-                //                        "<p>" + repsObject["offices"][i_office]["name"] + "</p>" +
-                //                        "<br>"
 
             };
 
             officeHtml2dArray.sort(compare)
 
+
             console.log(officeHtml2dArray);
-            
-            for (i in officeHtml2dArray){
-                repHtmlStringsList.push(officeHtml2dArray[i][2])
-            }
+
+            var currentGroupId = 10
+            var lastGroupId = 0
+            for (i in officeHtml2dArray) {
+                currentGroupId = officeHtml2dArray[i][1];
+                if (currentGroupId != lastGroupId) {
+                    var groupTitleHTML =
+                        "<div class='repGroupTitle'>" +
+                        groupTitles[currentGroupId] +
+                        "</div>"
+                    repHtmlStringsList.push(groupTitleHTML);
+                };
+                repHtmlStringsList.push(officeHtml2dArray[i][2]);
+                console.log(lastGroupId, currentGroupId);
+                lastGroupId = currentGroupId
+            };
+
 
             return repHtmlStringsList
         };
@@ -124,6 +159,8 @@
             repsObject["offices"][i_office]["name"].substr(0, 20) == "United States Senate"
         ) {
             return 10
+        } else if (divisionList.length == 3 && divisionList[2].substr(0, 8) == "district") {
+            return 50
         } else if (
             divisionList.length == 3 ||
             repsObject["offices"][i_office]["name"].substr(0, 8) == "Governor" ||
@@ -142,8 +179,9 @@
         ) {
             return 40
         } else {
-            return 50
-        }
+            return 60
+        } //            || 
+
 
     };
 
@@ -152,7 +190,7 @@
             return -1;
         if (a[1] > b[1])
             return 1;
-        return a[0]-b[0];
+        return a[0] - b[0];
     }
 
     function makeOfficeHtmlString(repsObject, i_office) {
@@ -169,21 +207,28 @@
                 "<div class='repCardWrapper'>",
                     "<div class='repCard'>",
                         makeRepCardString_img(officialsRepInfo),
-                        "<div class='repOffice'>",
-                            String(repsObject["offices"][i_office]["name"]),
-                        "</div>",
-                        "<div class='repName'>",
-                            String(officialsRepInfo["name"]),
-                            "<span class='repParty'>, ",
-                                String(officialsRepInfo["party"]),
-                            "</span>",
-                        "</div>",
-                        "<div class='repContactsWrapper'>",
-                            // Contact info, if available (emails channels phones urls)
-                            makeRepCardString_phones(officialsRepInfo),
-                            makeRepCardString_address(officialsRepInfo),
-                            makeRepCardString_channels(officialsRepInfo),
-                            makeRepCardString_urls(officialsRepInfo),
+                        "<div class='repContentWrapper'>",
+                            "<div class='repOffice'>",
+                                String(repsObject["offices"][i_office]["name"]),
+                            "</div>",
+                            "<div class='repInfoWrapper'>",
+                                "<div class='repNameWrapper'>",
+
+                                    "<span class='repName'>",
+                                        String(officialsRepInfo["name"]),
+                                    "</span>",
+                                    "<span class='repParty'>, ",
+                                        String(officialsRepInfo["party"]),
+                                    "</span>",
+                                "</div>",
+                                // Contact info, if available (emails channels phones urls)
+                                makeRepCardString_phones(officialsRepInfo),
+                                makeRepCardString_address(officialsRepInfo),
+                            "</div>",
+                            "<div class='repContactsWrapper'>",
+                                makeRepCardString_urls(officialsRepInfo),
+                                makeRepCardString_channels(officialsRepInfo),
+                            "</div>",
                         "</div>",
                     "</div>",
                 "</div>"
@@ -238,10 +283,11 @@
             var returnVar = "<div class='repContactUrls'>"
             for (i_contactDict in officialsRepInfo["urls"]) {
                 returnVar += "" +
-                    "<span class='repContactUrlSpan'>" +
-                    " | " +
+                    "<a class='repContactUrlSpan' target='_blank' href='" +
                     officialsRepInfo["urls"][i_contactDict] +
-                    "</span>"
+                    "' >" +
+                    officialsRepInfo["urls"][i_contactDict] +
+                    "</a>"
             };
             returnVar = returnVar + "</div>";
             return returnVar
@@ -256,11 +302,11 @@
             var returnVar = "<div class='repContactChannels'>"
             for (i_contactDict in officialsRepInfo["channels"]) {
                 returnVar += "" +
-                    "<span class='repContactChannelSpan'>" +
-                    " | " +
+                    "<div class='repContactChannelSpan'>" +
+                    "" +
                     officialsRepInfo["channels"][i_contactDict]["type"] + ": " +
                     officialsRepInfo["channels"][i_contactDict]["id"] +
-                    "</span>"
+                    "</div>"
             };
             returnVar = returnVar + "</div>";
             return returnVar
@@ -315,147 +361,170 @@
 
     main()
 
+
+    // Page changing animations
+
+    function changePage_guide2map() {
+        $("#c-page-guide").hide("slide", {
+            direction: "left"
+        }, 300);
+        $("#c-page-map").delay(100).show("slide", {
+            direction: "right"
+        }, 300);
+        $("#c-header-tab-guide").attr("onclick", "changePage_map2guide()")
+        $("#c-header-tab-map").attr("onclick", "")
+        $("#c-header-tab-list").attr("onclick", "changePage_map2list()");
+        $("#c-header-tab-guide").css({
+            'font-weight': '600',
+            'color': 'black',
+            'background-color': 'transparent'
+        });
+        $("#c-header-tab-map").css({
+            'font-weight': '800',
+            'background-color': 'white',
+            'border-bottom': '2px solid white'
+        });
+        setTimeout(function () {
+            map_pageMap.invalidateSize();
+        }, 200);
+    };
+
+    function changePage_guide2list() {
+        $("#c-page-guide").hide("slide", {
+            direction: "left"
+        }, 300);
+        $("#c-page-list").delay(100).show("slide", {
+            direction: "right"
+        }, 300);
+        $("#c-header-tab-guide").attr("onclick", "changePage_list2guide()");
+        $("#c-header-tab-map").attr("onclick", "changePage_list2map()");
+        $("#c-header-tab-list").attr("onclick", "");
+        $("#c-header-tab-guide").css({
+            'font-weight': '600',
+            'color': 'black',
+            'background-color': 'transparent',
+            'border-bottom': '0px'
+        });
+        $("#c-header-tab-list").css({
+            'font-weight': '800',
+            'color': 'white',
+            'background-color': '#112e51',
+            'border-bottom': '0px'
+        });
+    };
+
+    function changePage_map2guide() {
+        $("#c-page-map").hide("slide", {
+            direction: "right"
+        }, 300);
+        $("#c-page-guide").delay(100).show("slide", {
+            direction: "left"
+        }, 300);
+        $("#c-header-tab-guide").attr("onclick", "");
+        $("#c-header-tab-map").attr("onclick", "changePage_guide2map()");
+        $("#c-header-tab-list").attr("onclick", "changePage_guide2list()");
+        $("#c-header-tab-map").css({
+            'font-weight': '600',
+            'color': 'black',
+            'background-color': 'transparent',
+            'border-bottom': '0px'
+        });
+        $("#c-header-tab-guide").css({
+            'font-weight': '800',
+            'color': 'white',
+            'background-color': '#981b1e',
+            'border-bottom': '0px'
+        });
+    };
+
+    function changePage_map2list() {
+        $("#c-page-map").hide("slide", {
+            direction: "left"
+        }, 300);
+        $("#c-page-list").delay(100).show("slide", {
+            direction: "right"
+        }, 300);
+        $("#c-header-tab-guide").attr("onclick", "changePage_list2guide()");
+        $("#c-header-tab-map").attr("onclick", "changePage_list2map()");
+        $("#c-header-tab-list").attr("onclick", "");
+        $("#c-header-tab-map").css({
+            'font-weight': '600',
+            'color': 'black',
+            'background-color': 'transparent',
+            'border-bottom': '0px'
+        });
+        $("#c-header-tab-list").css({
+            'font-weight': '800',
+            'color': 'white',
+            'background-color': '#112e51',
+            'border-bottom': '0px'
+        });
+    };
+
+    function changePage_list2map() {
+        $("#c-page-list").hide("slide", {
+            direction: "right"
+        }, 300);
+        $("#c-page-map").delay(100).show("slide", {
+            direction: "left"
+        }, 300);
+        $("#c-header-tab-guide").attr("onclick", "changePage_map2guide()");
+        $("#c-header-tab-map").attr("onclick", "");
+        $("#c-header-tab-list").attr("onclick", "changePage_map2list()");
+        $("#c-header-tab-list").css({
+            'font-weight': '600',
+            'color': 'black',
+            'background-color': 'transparent'
+        });
+        $("#c-header-tab-map").css({
+            'font-weight': '800',
+            'background-color': 'white',
+            'border-bottom': '2px solid white'
+        });
+        setTimeout(function () {
+            map_pageMap.invalidateSize();
+        }, 200);
+    };
+
+    function changePage_list2guide() {
+        $("#c-page-list").hide("slide", {
+            direction: "right"
+        }, 300);
+        $("#c-page-guide").delay(100).show("slide", {
+            direction: "left"
+        }, 300);
+        $("#c-header-tab-guide").attr("onclick", "");
+        $("#c-header-tab-map").attr("onclick", "changePage_guide2map()");
+        $("#c-header-tab-list").attr("onclick", "changePage_guide2list()");
+        $("#c-header-tab-list").css({
+            'font-weight': '600',
+            'color': 'black',
+            'background-color': 'transparent',
+            'border-bottom': '0px'
+        });
+        $("#c-header-tab-guide").css({
+            'font-weight': '800',
+            'color': 'white',
+            'background-color': '#981b1e',
+            'border-bottom': '0px'
+        });
+    }
+
+    // Leaflet
+
+    var map_pageMap = L.map('c-page-map-mapFrame').setView([40, -100], 4);
+
+    var Esri_WorldGrayCanvas = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}', {
+        //        attribution: 'Data: <a href="https://ebird.org/">eBird</a> (2012-2016) |  Illustrations &copy; <a href="http://www.sibleyguides.com/">David Allen Sibley</a> | Tiles &copy; Esri | <a id="aboutMap">About Map <span class="glyphicon glyphicon-info-sign"></span></a>',
+        maxZoom: 16,
+        minZoom: 3
+    }).addTo(map_pageMap);
+
+    map_pageMap.on('click', function (ev) {
+        var latlng = map_pageMap.mouseEventToLatLng(ev.originalEvent);
+        var latLongString = latlng.lat + ', ' + latlng.lng
+        console.log(latLongString);
+        generateReps_mapPage_input(latLongString)
+    });
+
 })();
-
-// Page changing animations
-
-function changePage_guide2map() {
-    $("#c-page-guide").hide("slide", {
-        direction: "left"
-    }, 300);
-    $("#c-page-map").delay(100).show("slide", {
-        direction: "right"
-    }, 300);
-    $("#c-header-tab-guide").attr("onclick", "changePage_map2guide()")
-    $("#c-header-tab-map").attr("onclick", "")
-    $("#c-header-tab-list").attr("onclick", "changePage_map2list()");
-    $("#c-header-tab-guide").css({
-        'font-weight': '600',
-        'color': 'black',
-        'background-color': 'transparent'
-    });
-    $("#c-header-tab-map").css({
-        'font-weight': '800',
-        'background-color': 'white',
-        'border-bottom': '2px solid white'
-    });
-};
-
-function changePage_guide2list() {
-    $("#c-page-guide").hide("slide", {
-        direction: "left"
-    }, 300);
-    $("#c-page-list").delay(100).show("slide", {
-        direction: "right"
-    }, 300);
-    $("#c-header-tab-guide").attr("onclick", "changePage_list2guide()");
-    $("#c-header-tab-map").attr("onclick", "changePage_list2map()");
-    $("#c-header-tab-list").attr("onclick", "");
-    $("#c-header-tab-guide").css({
-        'font-weight': '600',
-        'color': 'black',
-        'background-color': 'transparent',
-        'border-bottom': '0px'
-    });
-    $("#c-header-tab-list").css({
-        'font-weight': '800',
-        'color': 'white',
-        'background-color': '#112e51',
-        'border-bottom': '0px'
-    });
-};
-
-function changePage_map2guide() {
-    $("#c-page-map").hide("slide", {
-        direction: "right"
-    }, 300);
-    $("#c-page-guide").delay(100).show("slide", {
-        direction: "left"
-    }, 300);
-    $("#c-header-tab-guide").attr("onclick", "");
-    $("#c-header-tab-map").attr("onclick", "changePage_guide2map()");
-    $("#c-header-tab-list").attr("onclick", "changePage_guide2list()");
-    $("#c-header-tab-map").css({
-        'font-weight': '600',
-        'color': 'black',
-        'background-color': 'transparent',
-        'border-bottom': '0px'
-    });
-    $("#c-header-tab-guide").css({
-        'font-weight': '800',
-        'color': 'white',
-        'background-color': '#981b1e',
-        'border-bottom': '0px'
-    });
-};
-
-function changePage_map2list() {
-    $("#c-page-map").hide("slide", {
-        direction: "left"
-    }, 300);
-    $("#c-page-list").delay(100).show("slide", {
-        direction: "right"
-    }, 300);
-    $("#c-header-tab-guide").attr("onclick", "changePage_list2guide()");
-    $("#c-header-tab-map").attr("onclick", "changePage_list2map()");
-    $("#c-header-tab-list").attr("onclick", "");
-    $("#c-header-tab-map").css({
-        'font-weight': '600',
-        'color': 'black',
-        'background-color': 'transparent',
-        'border-bottom': '0px'
-    });
-    $("#c-header-tab-list").css({
-        'font-weight': '800',
-        'color': 'white',
-        'background-color': '#112e51',
-        'border-bottom': '0px'
-    });
-};
-
-function changePage_list2map() {
-    $("#c-page-list").hide("slide", {
-        direction: "right"
-    }, 300);
-    $("#c-page-map").delay(100).show("slide", {
-        direction: "left"
-    }, 300);
-    $("#c-header-tab-guide").attr("onclick", "changePage_map2guide()");
-    $("#c-header-tab-map").attr("onclick", "");
-    $("#c-header-tab-list").attr("onclick", "changePage_map2list()");
-    $("#c-header-tab-list").css({
-        'font-weight': '600',
-        'color': 'black',
-        'background-color': 'transparent'
-    });
-    $("#c-header-tab-map").css({
-        'font-weight': '800',
-        'background-color': 'white',
-        'border-bottom': '2px solid white'
-    });
-
-};
-
-function changePage_list2guide() {
-    $("#c-page-list").hide("slide", {
-        direction: "right"
-    }, 300);
-    $("#c-page-guide").delay(100).show("slide", {
-        direction: "left"
-    }, 300);
-    $("#c-header-tab-guide").attr("onclick", "");
-    $("#c-header-tab-map").attr("onclick", "changePage_guide2map()");
-    $("#c-header-tab-list").attr("onclick", "changePage_guide2list()");
-    $("#c-header-tab-list").css({
-        'font-weight': '600',
-        'color': 'black',
-        'background-color': 'transparent',
-        'border-bottom': '0px'
-    });
-    $("#c-header-tab-guide").css({
-        'font-weight': '800',
-        'color': 'white',
-        'background-color': '#981b1e',
-        'border-bottom': '0px'
-    });
-}
