@@ -4,7 +4,8 @@
     // Start main JavaScript stream
     function main() {
 
-        changePage_guide2map()
+        activateUrlParameters(document.URL);
+        
 
         //        startPersonalizedGuide("invalid input")
         //startPersonalizedGuide("1601 fieldthorn drive reston va");
@@ -28,6 +29,35 @@
     }
 
     // Declare functions
+
+    function activateUrlParameters(url) {
+        url = url.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+        var parameters = getParameters(url);
+        console.log(parameters)
+        if(parameters){
+            if(parameters["page"] == "list"){
+                changePage_guide2list_instant();
+                generateReps_listPage_apiPull(parameters["address"].replace("+", " "))
+            }
+        } else {
+            // temporary
+            changePage_guide2list();
+        }
+    };
+
+    function getParameters(url) {
+        try {
+            var parameters = {};
+            var parametersList = url.split("?")[1].split("&")
+            for (i in parametersList) {
+                var currentParameter = parametersList[i].split("=");
+                parameters[currentParameter[0]] = currentParameter[1]
+            };
+            return parameters
+        } catch (err) {
+            return false
+        }
+    };
 
     function startPersonalizedGuide(locationString) {
 
@@ -72,9 +102,10 @@
         $("#c-page-list-generatedReps").html("")
         Promise.all([
             apiPullReps(locationString),
-            apiPullCoords(locationString)
+            ""
+//            apiPullCoords(locationString)
         ]).then(function (apiValues) {
-            $("#c-page-list-generatedReps").append(generateRepHtml(apiValues))
+            $("#c-page-list-generatedReps").append(generateRepHtml(apiValues, 0))
 
         })
     };
@@ -83,18 +114,19 @@
         $("#c-page-map-generatedReps").html("")
         Promise.all([
             apiPullReps(locationString),
-            apiPullCoords(locationString)
+            ""
+//            apiPullCoords(locationString)
         ]).then(function (apiValues) {
-            $("#c-page-map-generatedReps").append(generateRepHtml(apiValues))
+            $("#c-page-map-generatedReps").append(generateRepHtml(apiValues, 2))
 
         })
     };
 
     function generateReps_listPage_fromMap(apiValues) {
-        $("#c-page-list-generatedReps").append(generateRepHtml(apiValues))
+        $("#c-page-list-generatedReps").append(generateRepHtml(apiValues, 0))
     };
 
-    function generateRepHtml(apiValues) {
+    function generateRepHtml(apiValues, skipVal) {
         console.log("Starting generateReps_listPage_input()");
 
         if (true) {
@@ -110,7 +142,8 @@
 
             //            repHtmlStringsList.push("<p>Start of Representatives (header)</p><br><br>");
 
-            for (i_office in repsObject["offices"]) {
+            //            for (i_office in repsObject["offices"]) {
+            for (var i_office = skipVal; i_office < repsObject["offices"].length; i_office++) {
 
                 officeHtml2dArray.push(
                     [i_office, getOfficeOrder(repsObject, i_office),
@@ -213,17 +246,11 @@
                             "</div>",
                             "<div class='repInfoWrapper'>",
                                 "<div class='repNameWrapper'>",
-
-                                    "<span class='repName'>",
-                                        String(officialsRepInfo["name"]),
-                                    "</span>",
-                                    "<span class='repParty'>, ",
-                                        String(officialsRepInfo["party"]),
-                                    "</span>",
+                                    makeRepCardString_nameParty(officialsRepInfo),
                                 "</div>",
                                 // Contact info, if available (emails channels phones urls)
                                 makeRepCardString_phones(officialsRepInfo),
-                                makeRepCardString_address(officialsRepInfo),
+                                makeRepCardString_address(officialsRepInfo["address"]),
                             "</div>",
                             "<div class='repContactsWrapper'>",
                                 makeRepCardString_urls(officialsRepInfo),
@@ -256,17 +283,42 @@
 
     };
 
-    function makeRepCardString_address(officialsRepInfo) {
-        if (officialsRepInfo["address"]) {
+    function makeRepCardString_nameParty(officialsRepInfo) {
+        var test = ["<span class='repName'>",
+                        String(officialsRepInfo["name"]),
+                    "</span>",
+                    "<span class='repParty'>, ",
+                        String(officialsRepInfo["party"]),
+                    "</span>",
+                   ];
+        var returnVar = "";
+        returnVar += "<span class='repName'>" +
+            String(officialsRepInfo["name"]) +
+            "</span>"
+        if (officialsRepInfo["party"] && officialsRepInfo["party"] == "Democratic") {
+            returnVar += "<span class='repParty'>, " +
+                String(officialsRepInfo["party"]).slice(0, -2) +
+                "</span>"
+        } else if (officialsRepInfo["party"] && officialsRepInfo["party"] != "Unknown") {
+            returnVar += "<span class='repParty'>, " +
+                String(officialsRepInfo["party"]) +
+                "</span>"
+        };
+        return returnVar
+    };
+
+    function makeRepCardString_address(addressInfo) {
+        if (addressInfo) {
             var returnVar = "<div class='repContactAddress'>"
-            for (i_contactDict in officialsRepInfo["address"]) {
+            for (i_contactDict in addressInfo) {
                 returnVar += "" +
                     "<div class='repContactaddressDiv'>" +
-                    officialsRepInfo["address"][i_contactDict]["line1"] + "<br>" +
-                    ((officialsRepInfo["address"][i_contactDict]["line2"]) ? officialsRepInfo["address"][i_contactDict]["line2"] + "<br>" : "") +
-                    officialsRepInfo["address"][i_contactDict]["city"] + ", " +
-                    officialsRepInfo["address"][i_contactDict]["state"] + " " +
-                    officialsRepInfo["address"][i_contactDict]["zip"] +
+                    addressInfo[i_contactDict]["line1"] + "<br>" +
+                    ((addressInfo[i_contactDict]["line2"]) ? addressInfo[i_contactDict]["line2"] + " " : "") +
+                    ((addressInfo[i_contactDict]["line3"]) ? addressInfo[i_contactDict]["line3"] + " " : "") +
+                    addressInfo[i_contactDict]["city"] + " " +
+                    addressInfo[i_contactDict]["state"] + " " +
+                    addressInfo[i_contactDict]["zip"] +
                     "</div>"
             };
             returnVar = returnVar + "</div>";
@@ -362,155 +414,30 @@
     main()
 
 
-    // Page changing animations
-
-    function changePage_guide2map() {
-        $("#c-page-guide").hide("slide", {
-            direction: "left"
-        }, 300);
-        $("#c-page-map").delay(100).show("slide", {
-            direction: "right"
-        }, 300);
-        $("#c-header-tab-guide").attr("onclick", "changePage_map2guide()")
-        $("#c-header-tab-map").attr("onclick", "")
-        $("#c-header-tab-list").attr("onclick", "changePage_map2list()");
-        $("#c-header-tab-guide").css({
-            'font-weight': '600',
-            'color': 'black',
-            'background-color': 'transparent'
-        });
-        $("#c-header-tab-map").css({
-            'font-weight': '800',
-            'background-color': 'white',
-            'border-bottom': '2px solid white'
-        });
-        setTimeout(function () {
-            map_pageMap.invalidateSize();
-        }, 200);
-    };
-
-    function changePage_guide2list() {
-        $("#c-page-guide").hide("slide", {
-            direction: "left"
-        }, 300);
-        $("#c-page-list").delay(100).show("slide", {
-            direction: "right"
-        }, 300);
-        $("#c-header-tab-guide").attr("onclick", "changePage_list2guide()");
-        $("#c-header-tab-map").attr("onclick", "changePage_list2map()");
-        $("#c-header-tab-list").attr("onclick", "");
-        $("#c-header-tab-guide").css({
-            'font-weight': '600',
-            'color': 'black',
-            'background-color': 'transparent',
-            'border-bottom': '0px'
-        });
-        $("#c-header-tab-list").css({
-            'font-weight': '800',
-            'color': 'white',
-            'background-color': '#112e51',
-            'border-bottom': '0px'
-        });
-    };
-
-    function changePage_map2guide() {
-        $("#c-page-map").hide("slide", {
-            direction: "right"
-        }, 300);
-        $("#c-page-guide").delay(100).show("slide", {
-            direction: "left"
-        }, 300);
-        $("#c-header-tab-guide").attr("onclick", "");
-        $("#c-header-tab-map").attr("onclick", "changePage_guide2map()");
-        $("#c-header-tab-list").attr("onclick", "changePage_guide2list()");
-        $("#c-header-tab-map").css({
-            'font-weight': '600',
-            'color': 'black',
-            'background-color': 'transparent',
-            'border-bottom': '0px'
-        });
-        $("#c-header-tab-guide").css({
-            'font-weight': '800',
-            'color': 'white',
-            'background-color': '#981b1e',
-            'border-bottom': '0px'
-        });
-    };
-
-    function changePage_map2list() {
-        $("#c-page-map").hide("slide", {
-            direction: "left"
-        }, 300);
-        $("#c-page-list").delay(100).show("slide", {
-            direction: "right"
-        }, 300);
-        $("#c-header-tab-guide").attr("onclick", "changePage_list2guide()");
-        $("#c-header-tab-map").attr("onclick", "changePage_list2map()");
-        $("#c-header-tab-list").attr("onclick", "");
-        $("#c-header-tab-map").css({
-            'font-weight': '600',
-            'color': 'black',
-            'background-color': 'transparent',
-            'border-bottom': '0px'
-        });
-        $("#c-header-tab-list").css({
-            'font-weight': '800',
-            'color': 'white',
-            'background-color': '#112e51',
-            'border-bottom': '0px'
-        });
-    };
-
-    function changePage_list2map() {
-        $("#c-page-list").hide("slide", {
-            direction: "right"
-        }, 300);
-        $("#c-page-map").delay(100).show("slide", {
-            direction: "left"
-        }, 300);
-        $("#c-header-tab-guide").attr("onclick", "changePage_map2guide()");
-        $("#c-header-tab-map").attr("onclick", "");
-        $("#c-header-tab-list").attr("onclick", "changePage_map2list()");
-        $("#c-header-tab-list").css({
-            'font-weight': '600',
-            'color': 'black',
-            'background-color': 'transparent'
-        });
-        $("#c-header-tab-map").css({
-            'font-weight': '800',
-            'background-color': 'white',
-            'border-bottom': '2px solid white'
-        });
-        setTimeout(function () {
-            map_pageMap.invalidateSize();
-        }, 200);
-    };
-
-    function changePage_list2guide() {
-        $("#c-page-list").hide("slide", {
-            direction: "right"
-        }, 300);
-        $("#c-page-guide").delay(100).show("slide", {
-            direction: "left"
-        }, 300);
-        $("#c-header-tab-guide").attr("onclick", "");
-        $("#c-header-tab-map").attr("onclick", "changePage_guide2map()");
-        $("#c-header-tab-list").attr("onclick", "changePage_guide2list()");
-        $("#c-header-tab-list").css({
-            'font-weight': '600',
-            'color': 'black',
-            'background-color': 'transparent',
-            'border-bottom': '0px'
-        });
-        $("#c-header-tab-guide").css({
-            'font-weight': '800',
-            'color': 'white',
-            'background-color': '#981b1e',
-            'border-bottom': '0px'
-        });
-    }
 
     // Leaflet
+    
+    // list page map
+
+    var map_pageList = L.map('c-page-list-mapFrame', {
+        zoomControl: false,
+        attributionControl: false
+    }).setView([40, -100], 2);
+//    $('.leaflet-control-attribution').hide()
+    
+    var Esri_WorldGrayCanvas = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}', {
+        //        attribution: 'Data: <a href="https://ebird.org/">eBird</a> (2012-2016) |  Illustrations &copy; <a href="http://www.sibleyguides.com/">David Allen Sibley</a> | Tiles &copy; Esri | <a id="aboutMap">About Map <span class="glyphicon glyphicon-info-sign"></span></a>',
+        maxZoom: 16,
+        minZoom: 1
+    }).addTo(map_pageList);
+    
+    setTimeout(function () {
+        map_pageList.invalidateSize();
+    }, 200);
+    
+    
+    
+    // map page map
 
     var map_pageMap = L.map('c-page-map-mapFrame').setView([40, -100], 4);
 
@@ -527,4 +454,186 @@
         generateReps_mapPage_input(latLongString)
     });
 
+    setTimeout(function () {
+        map_pageMap.invalidateSize();
+    }, 200);
+    $("#c-header-tab-map").click(function () {
+        setTimeout(function () {
+            map_pageMap.invalidateSize();
+        }, 200);
+    });
+
 })();
+
+// Page changing animations
+
+function changePage_guide2map() {
+    $("#c-page-guide").hide("slide", {
+        direction: "left"
+    }, 300);
+    $("#c-page-map").delay(100).show("slide", {
+        direction: "right"
+    }, 300);
+    $("#c-header-tab-guide").attr("onclick", "changePage_map2guide()")
+    $("#c-header-tab-map").attr("onclick", "")
+    $("#c-header-tab-list").attr("onclick", "changePage_map2list()");
+    $("#c-header-tab-guide").css({
+        'font-weight': '600',
+        'color': 'black',
+        'background-color': 'transparent'
+    });
+    $("#c-header-tab-map").css({
+        'font-weight': '800',
+        'background-color': 'white',
+        'border-bottom': '2px solid white'
+    });
+};
+
+function changePage_guide2list_instant() {
+    $("#c-page-guide").hide();
+    $("#c-page-list").show();
+    $("#c-header-tab-guide").attr("onclick", "changePage_list2guide()");
+    $("#c-header-tab-map").attr("onclick", "changePage_list2map()");
+    $("#c-header-tab-list").attr("onclick", "");
+    $("#c-header-tab-guide").css({
+        'font-weight': '600',
+        'color': 'black',
+        'background-color': 'transparent',
+        'border-bottom': '0px'
+    });
+    $("#c-header-tab-list").css({
+        'font-weight': '800',
+        'color': 'white',
+        'background-color': '#112e51',
+        'border-bottom': '0px'
+    });
+};
+function changePage_guide2list() {
+    $("#c-page-guide").hide("slide", {
+        direction: "left"
+    }, 300);
+    $("#c-page-list").delay(100).show("slide", {
+        direction: "right"
+    }, 300);
+    $("#c-header-tab-guide").attr("onclick", "changePage_list2guide()");
+    $("#c-header-tab-map").attr("onclick", "changePage_list2map()");
+    $("#c-header-tab-list").attr("onclick", "");
+    $("#c-header-tab-guide").css({
+        'font-weight': '600',
+        'color': 'black',
+        'background-color': 'transparent',
+        'border-bottom': '0px'
+    });
+    $("#c-header-tab-list").css({
+        'font-weight': '800',
+        'color': 'white',
+        'background-color': '#112e51',
+        'border-bottom': '0px'
+    });
+};
+
+function changePage_map2guide() {
+    $("#c-page-map").hide("slide", {
+        direction: "right"
+    }, 300);
+    $("#c-page-guide").delay(100).show("slide", {
+        direction: "left"
+    }, 300);
+    $("#c-header-tab-guide").attr("onclick", "");
+    $("#c-header-tab-map").attr("onclick", "changePage_guide2map()");
+    $("#c-header-tab-list").attr("onclick", "changePage_guide2list()");
+    $("#c-header-tab-map").css({
+        'font-weight': '600',
+        'color': 'black',
+        'background-color': 'transparent',
+        'border-bottom': '0px'
+    });
+    $("#c-header-tab-guide").css({
+        'font-weight': '800',
+        'color': 'white',
+        'background-color': '#981b1e',
+        'border-bottom': '0px'
+    });
+};
+
+function changePage_map2list() {
+    $("#c-page-map").hide("slide", {
+        direction: "left"
+    }, 300);
+    $("#c-page-list").delay(100).show("slide", {
+        direction: "right"
+    }, 300);
+    $("#c-header-tab-guide").attr("onclick", "changePage_list2guide()");
+    $("#c-header-tab-map").attr("onclick", "changePage_list2map()");
+    $("#c-header-tab-list").attr("onclick", "");
+    $("#c-header-tab-map").css({
+        'font-weight': '600',
+        'color': 'black',
+        'background-color': 'transparent',
+        'border-bottom': '0px'
+    });
+    $("#c-header-tab-list").css({
+        'font-weight': '800',
+        'color': 'white',
+        'background-color': '#112e51',
+        'border-bottom': '0px'
+    });
+};
+
+function changePage_list2map() {
+    $("#c-page-list").hide("slide", {
+        direction: "right"
+    }, 300);
+    $("#c-page-map").delay(100).show("slide", {
+        direction: "left"
+    }, 300);
+    $("#c-header-tab-guide").attr("onclick", "changePage_map2guide()");
+    $("#c-header-tab-map").attr("onclick", "");
+    $("#c-header-tab-list").attr("onclick", "changePage_map2list()");
+    $("#c-header-tab-list").css({
+        'font-weight': '600',
+        'color': 'black',
+        'background-color': 'transparent'
+    });
+    $("#c-header-tab-map").css({
+        'font-weight': '800',
+        'background-color': 'white',
+        'border-bottom': '2px solid white'
+    });
+};
+
+function changePage_list2guide() {
+    $("#c-page-list").hide("slide", {
+        direction: "right"
+    }, 300);
+    $("#c-page-guide").delay(100).show("slide", {
+        direction: "left"
+    }, 300);
+    $("#c-header-tab-guide").attr("onclick", "");
+    $("#c-header-tab-map").attr("onclick", "changePage_guide2map()");
+    $("#c-header-tab-list").attr("onclick", "changePage_guide2list()");
+    $("#c-header-tab-list").css({
+        'font-weight': '600',
+        'color': 'black',
+        'background-color': 'transparent',
+        'border-bottom': '0px'
+    });
+    $("#c-header-tab-guide").css({
+        'font-weight': '800',
+        'color': 'white',
+        'background-color': '#981b1e',
+        'border-bottom': '0px'
+    });
+}
+
+function copyShareableUrl(){
+  /* Get the text field */
+  var copyText = document.getElementById("c-input-shareableUrl");
+
+  /* Select the text field */
+  copyText.select();
+
+  /* Copy the text inside the text field */
+  document.execCommand("Copy");
+
+}
