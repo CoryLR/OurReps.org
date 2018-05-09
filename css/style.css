@@ -194,7 +194,7 @@ body {
 #c-page-list-banner-content-subTitle {
     letter-spacing: 2px;
     margin-top: -5px;
-    margin-bottom: 5px
+    margin-bottom: 10px
 }
 
 .c-page-list-banner-content-body-panel {
@@ -220,6 +220,10 @@ body {
     width: calc(50% - 2px);
 }
 
+#c-input-shareableUrl{
+    cursor: default
+}
+
 #c-page-list-banner-content-body-panel1 button{
     width: calc(100% - 0px);
 }
@@ -227,6 +231,10 @@ body {
 #c-page-list-banner-content-body-panel1 .c-page-list-panel2-text div{
     display: inline-block;
     vertical-align:top;
+}
+
+#c-page-list-banner-content-body-panel1 .c-page-list-panel2-text{
+    cursor: pointer
 }
 
 #c-page-list-banner-content-body-panel1 .c-page-list-panel2-text div:nth-child(1){
@@ -245,6 +253,9 @@ body {
     margin-top: 15px;
     color: #dce4ef;
     padding-left: 1px
+}
+.c-page-list-generated-address div div:nth-child(1){
+    font-weight: 600;
 }
 
 /*rep css for page list*/

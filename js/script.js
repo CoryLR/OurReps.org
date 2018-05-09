@@ -5,7 +5,7 @@
     function main() {
 
         activateUrlParameters(document.URL);
-        
+
 
         //        startPersonalizedGuide("invalid input")
         //startPersonalizedGuide("1601 fieldthorn drive reston va");
@@ -33,15 +33,14 @@
     function activateUrlParameters(url) {
         url = url.replace(/</g, "&lt;").replace(/>/g, "&gt;");
         var parameters = getParameters(url);
-        console.log(parameters)
-        if(parameters){
-            if(parameters["page"] == "list"){
+        if (parameters) {
+            if (parameters["page"] == "list") {
                 changePage_guide2list_instant();
                 generateReps_listPage_apiPull(parameters["address"].replace("+", " "))
             }
         } else {
             // temporary
-            changePage_guide2list();
+            changePage_guide2map();
         }
     };
 
@@ -66,9 +65,8 @@
             apiPullCoords(locationString)
         ]).then(function (apiValues) {
 
-            console.log(apiValues)
-                // unpack the loaded data into variables
-                //var [csvData, jsonStates] = apiValues
+            // unpack the loaded data into variables
+            //var [csvData, jsonStates] = apiValues
 
         })
 
@@ -102,10 +100,25 @@
         $("#c-page-list-generatedReps").html("")
         Promise.all([
             apiPullReps(locationString),
-            ""
-//            apiPullCoords(locationString)
+            apiPullCoords(locationString)
         ]).then(function (apiValues) {
-            $("#c-page-list-generatedReps").append(generateRepHtml(apiValues, 0))
+            
+            if(apiValues[0]){
+                $("#c-page-list-generatedReps").append(generateRepHtml(apiValues, 0));
+                console.log(makeAddressUrlString([
+                    apiValues[0]["normalizedInput"]
+                ]));
+                var urlString = 
+                    "https://beta.ourreps.org?page=list&address=" +
+                    makeAddressUrlString([
+                        apiValues[0]["normalizedInput"]
+                    ]);
+                $("#c-input-shareableUrl").val(urlString);
+                $("#c-page-list-banner-content-body-panel2 a").attr("href", urlString)
+            } else {
+                // display "retry address" message
+                console.log("Address invalid");
+            }
 
         })
     };
@@ -127,20 +140,25 @@
     };
 
     function generateRepHtml(apiValues, skipVal) {
-        console.log("Starting generateReps_listPage_input()");
 
         if (true) {
             var [repsObject, locationObject] = apiValues;
+            console.log(repsObject);
 
-            console.log("repsObject:")
-            console.log(repsObject)
-            console.log("locationObject:")
-            console.log(locationObject)
 
             var repHtmlStringsList = [];
             var officeHtml2dArray = [];
+            
+            console.log(repsObject["normalizedInput"]);
 
-            //            repHtmlStringsList.push("<p>Start of Representatives (header)</p><br><br>");
+            repHtmlStringsList.push(
+                "<div class='c-page-list-generated-address'>" +
+                "<div>Address:</div>" +
+                makeRepCardString_address([
+                    repsObject["normalizedInput"]
+                ]) +
+                "</div>"
+            );
 
             //            for (i_office in repsObject["offices"]) {
             for (var i_office = skipVal; i_office < repsObject["offices"].length; i_office++) {
@@ -156,7 +174,6 @@
             officeHtml2dArray.sort(compare)
 
 
-            console.log(officeHtml2dArray);
 
             var currentGroupId = 10
             var lastGroupId = 0
@@ -170,7 +187,6 @@
                     repHtmlStringsList.push(groupTitleHTML);
                 };
                 repHtmlStringsList.push(officeHtml2dArray[i][2]);
-                console.log(lastGroupId, currentGroupId);
                 lastGroupId = currentGroupId
             };
 
@@ -180,11 +196,7 @@
     };
 
     function getOfficeOrder(repsObject, i_office) {
-        //        console.log(repsObject["offices"][i_office]["name"]);
-        //        console.log(repsObject["offices"][i_office]["divisionId"]);
-        //        console.log("");
         var divisionList = repsObject["offices"][i_office]["divisionId"].split("/");
-        console.log(divisionList);
 
         if (
             divisionList.length < 3 ||
@@ -232,7 +244,6 @@
         var returnVar = "";
 
         for (i_rep in officialIndicesList) {
-            //            console.log(repsObject["officials"][officialIndicesList[i_rep]])
 
             var officialsRepInfo = repsObject["officials"][officialIndicesList[i_rep]]
 
@@ -330,6 +341,30 @@
 
     };
 
+    function makeAddressUrlString(addressInfo) {
+        if (addressInfo) {
+            var returnVar = ""
+            for (i_contactDict in addressInfo) {
+                returnVar += "" +
+                    "" +
+                    addressInfo[i_contactDict]["line1"] + " " +
+                    ((addressInfo[i_contactDict]["line2"]) ? addressInfo[i_contactDict]["line2"] + " " : "") +
+                    ((addressInfo[i_contactDict]["line3"]) ? addressInfo[i_contactDict]["line3"] + " " : "") +
+                    addressInfo[i_contactDict]["city"] + " " +
+                    addressInfo[i_contactDict]["state"] + " " +
+                    addressInfo[i_contactDict]["zip"] +
+                    ""
+            };
+//            returnVar = returnVar.replace(" ", "+");
+            console.log(returnVar.replace(/ /g, "+"));
+            return returnVar.replace(/ /g, "+")
+        } else {
+            return ""
+        }
+        return ""
+
+    };
+
     function makeRepCardString_urls(officialsRepInfo) {
         if (officialsRepInfo["urls"]) {
             var returnVar = "<div class='repContactUrls'>"
@@ -416,29 +451,43 @@
 
 
     // Leaflet
-    
-    // list page map
 
+    // initialize list-page map
     var map_pageList = L.map('c-page-list-mapFrame', {
         zoomControl: false,
         attributionControl: false
     }).setView([40, -100], 2);
-//    $('.leaflet-control-attribution').hide()
-    
+
+
+    // disable map interaction
+    map_pageList.dragging.disable();
+    map_pageList.touchZoom.disable();
+    map_pageList.doubleClickZoom.disable();
+    map_pageList.scrollWheelZoom.disable();
+    map_pageList.boxZoom.disable();
+    map_pageList.keyboard.disable();
+    if (map_pageList.tap) map_pageList.tap.disable();
+
+    // clicking the map opens the current location in the Map tab
+    $("#c-page-list-mapFrame").click(function () {
+        alert("Map clicked.")
+    });
+
+    // add basemap
     var Esri_WorldGrayCanvas = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}', {
         //        attribution: 'Data: <a href="https://ebird.org/">eBird</a> (2012-2016) |  Illustrations &copy; <a href="http://www.sibleyguides.com/">David Allen Sibley</a> | Tiles &copy; Esri | <a id="aboutMap">About Map <span class="glyphicon glyphicon-info-sign"></span></a>',
         maxZoom: 16,
         minZoom: 1
     }).addTo(map_pageList);
-    
+
+    // fix map bug
     setTimeout(function () {
         map_pageList.invalidateSize();
     }, 200);
-    
-    
-    
-    // map page map
 
+
+
+    // initialize map-page map
     var map_pageMap = L.map('c-page-map-mapFrame').setView([40, -100], 4);
 
     var Esri_WorldGrayCanvas = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}', {
@@ -450,7 +499,6 @@
     map_pageMap.on('click', function (ev) {
         var latlng = map_pageMap.mouseEventToLatLng(ev.originalEvent);
         var latLongString = latlng.lat + ', ' + latlng.lng
-        console.log(latLongString);
         generateReps_mapPage_input(latLongString)
     });
 
@@ -508,6 +556,7 @@ function changePage_guide2list_instant() {
         'border-bottom': '0px'
     });
 };
+
 function changePage_guide2list() {
     $("#c-page-guide").hide("slide", {
         direction: "left"
@@ -626,14 +675,14 @@ function changePage_list2guide() {
     });
 }
 
-function copyShareableUrl(){
-  /* Get the text field */
-  var copyText = document.getElementById("c-input-shareableUrl");
+function copyShareableUrl() {
+    /* Get the text field */
+    var copyText = document.getElementById("c-input-shareableUrl");
 
-  /* Select the text field */
-  copyText.select();
+    /* Select the text field */
+    copyText.select();
 
-  /* Copy the text inside the text field */
-  document.execCommand("Copy");
+    /* Copy the text inside the text field */
+    document.execCommand("Copy");
 
 }
