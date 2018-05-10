@@ -6,11 +6,11 @@
 	<meta name="description" content="OurReps.org Coming Soon!" />
 -->
 
-    <meta name="viewport" content="width=740">
-    
+    <meta name="viewport" content="width=745">
+
     <link rel="stylesheet" href="lib/leaflet/leaflet.css">
     <link rel="stylesheet" type="text/css" href="lib/bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="css/style.css?v2018-05-09-23-22">
+    <link rel="stylesheet" type="text/css" href="css/style.css?v2018-05-10-05-10">
 
 </head>
 
@@ -19,14 +19,17 @@
     <!-- Header -->
     <div id="c-application-header">
         <div id="c-header-title-wrapper">
-            <span id="c-header-title-text"><span id="c-header-title-text-OUR">OUR</span><span id="c-header-title-text-REPS">REPS</span>.</span><span id="c-header-title-text-ORG">ORG</span></div>
+            <span id="c-header-title-text"><span id="c-header-title-text-OUR">OUR</span><span id="c-header-title-text-REPS">REPS</span>.</span><span id="c-header-title-text-ORG">ORG</span>
+        </div>
         <div id="c-header-tabs-wrapper">
-            <div id="c-header-tab-guide" class="c-header-tabs" onclick="">
-                <div>GUIDE</div>
-            </div>
             <div id="c-header-tab-list" class="c-header-tabs" onclick="changePage_guide2list()">
                 <div>LIST</div>
             </div>
+            <!--
+            <div id="c-header-tab-guide" class="c-header-tabs" onclick="">
+                <div>GUIDE</div>
+            </div>
+-->
             <div id="c-header-tab-map" class="c-header-tabs" onclick="changePage_guide2map()">
                 <div>MAP</div>
             </div>
@@ -36,11 +39,14 @@
                         <span class="glyphicon glyphicon-menu-hamburger"></span>
                     </div>
                     <ul id="c-header-tab-menu-dropdown" class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenu1">
+<!--
+                        <li><a href="#">LIST</a></li>
                         <li><a href="#">GUIDE</a></li>
                         <li><a href="#">MAP</a></li>
-                        <li><a href="#">LIST</a></li>
                         <li role="separator" class="divider"></li>
-                        <li><a href="#">Resource Links</a></li>
+-->
+                        <li><a href="#">Find Where To Vote</a></li>
+                        <li><a href="#">More Resources</a></li>
                         <li><a href="#">About</a></li>
                     </ul>
                 </div>
@@ -50,7 +56,16 @@
 
     <!-- Guide tab -->
     <div id="c-page-guide" class="c-pages">
-        <div id="c-page-guide-banner" class="c-pages-banner"></div>
+        <div id="c-page-guide-banner" class="c-pages-banner">
+            <!--                <div id="c-page-guide-banner-content-superTitle">A Guide To</div>-->
+            <div id="c-page-banner-contentWrapper">
+                <div id="c-page-guide-banner-content-title">Personalized Guide</div>
+                <div id="c-page-guide-banner-content-subTitle">Guide to Federal, State & Local Representation</div>
+                <button class="btn btn-primary c-startButton">START GUIDE</button>
+                <br>
+                <div class="c-startText">Learn about who represents you in government and what their roles are in your life.<br>(5-10 minutes)</div>
+            </div>
+        </div>
         <div id="c-page-guide-body" class="c-pages-body">
 
         </div>
@@ -64,13 +79,26 @@
         <div id="c-page-map-body" class="c-pages-body">
             <div id="c-page-map-panel">
                 <div id="c-page-map-panel-title">Representation Snapshot</div>
-                <div id="c-page-map-generatedReps"><div id="c-page-map-placeholderText">Click or tap the map to see U.S. representatives for the selected location.</div></div>
+                <div id="c-page-map-generatedReps">
+                    <div id="c-page-map-placeholderText">Click or tap the map to see U.S. representatives for the selected location.</div>
+                </div>
             </div>
             <div id="c-page-map-mapFrameWrapper">
                 <div id="c-page-map-mapFrame" style="height: 100%; width: 100%">
+                    <div id="legendWrapper">
+                        <div id="legendTitle">Legend</div>
+                        <div class="legendRow">
+                            <div id="legendBox_data"></div>
+                            <div class="legendBox_text">States</div>
+                        </div>
+                        <div class="legendRow">
+                            <div id="legendBox_noData"></div>
+                            <div class="legendBox_text">Congressional Districts</div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
-
         </div>
     </div>
 
@@ -89,14 +117,19 @@
                                 <!--                                <small id="" class="form-text">Your information is not stored.</small>-->
                             </div>
                             <button class="btn btn-primary" id="c-btn-list-generate">Find Representatives</button>
+                            <!--                            <button class="btn btn-primary" id="c-btn-list-generate-guide">Start Guide</button>-->
                             <div class="c-page-list-panel2-text">
                                 <div>
                                     <span class="glyphicon glyphicon-unchecked"></span>
                                 </div>
                                 <div id="c-page-list-supplementalToggle">
-                                    <span>Show supplementary information</span>
+                                    <span>Show Context Information</span>
                                 </div>
                             </div>
+                        </div>
+                        <div id="c-page-list-banner-content-body-panel3" class="c-page-list-banner-content-body-panel">
+                            <label for=""> Map</label>
+                            <div id="c-page-list-mapFrame" style=""></div>
                         </div>
                         <div id="c-page-list-banner-content-body-panel2" class="c-page-list-banner-content-body-panel">
                             <div class="form-group">
@@ -108,9 +141,6 @@
                                 <div class="c-page-list-panel2-text">This URL brings you back to this list. You can bookmark or share it.</div>
                             </div>
                         </div>
-                        <div id="c-page-list-banner-content-body-panel3" class="c-page-list-banner-content-body-panel">
-                            <div id="c-page-list-mapFrame" style=""></div>
-                        </div>
                     </div>
 
                 </div>
@@ -119,15 +149,17 @@
         <div id="c-page-list-body" class="c-pages-body">
             <div id="c-page-list-content">
                 <div id="c-page-list-generatedReps">
-                    Enter your address in the menu above.
+                    Enter your address to find your representation.
                 </div>
             </div>
         </div>
     </div>
-    
+
     <!-- Dynamic CSS -->
     <style id="supplementaryCSS">
-        #c-page-list .supplemental{display: none !important}
+        #c-page-list .supplemental {
+            display: none !important
+        }
     </style>
 
     <!-- Scripts -->
@@ -135,7 +167,7 @@
     <script src="lib/jquery/jquery-3.3.1.min.js"></script>
     <script src="lib/jqueryui/jquery-ui.min.js"></script>
     <script src="lib/bootstrap/js/bootstrap.min.js"></script>
-    <script src="js/script.js?v2018-05-09-23-22"></script>
+    <script src="js/script.js?v2018-05-10-05-46"></script>
 
 
 </body>

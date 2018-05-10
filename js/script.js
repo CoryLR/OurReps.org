@@ -7,11 +7,6 @@
         activateUrlParameters(document.URL);
 
 
-        //        startPersonalizedGuide("invalid input")
-        //startPersonalizedGuide("1601 fieldthorn drive reston va");
-        //        startPersonalizedGuide("1415 Kamehameha IV Rd Honolulu HI");
-        //        startPersonalizedGuide("7409 Welton Dr Madison, WI 53719");
-
     };
 
 
@@ -40,26 +35,27 @@
     };
     var govOfficeDescriptions = {
         potus: "As head of the Executive Branch, this person serves as the chief of our country. They administer the executive branch of the government. The President serves a four-year term and can be elected no more than two times.",
-        vpotus: "This person is the next in line to the President. In addition to supporting the president, the Vice President presides over the Senate and has tie-breaking privileges.",
+        vpotus: "This person is the next in line to the President. In addition to supporting the president, the Vice-President presides over the Senate and has tie-breaking privileges.",
         ushouse: "Legislative member of the U.S. House of Representatives. Special duties include impeachment and introducing revenue bills. There are 435 Representatives. The number of representatives each state gets is determined by its population; some states have just 2 representatives while others have as many as 40. There are additional non-voting delegates who represent the District of Columbia and the territories. A Representative serves a two-year term, and there is no limit to the number of terms an individual can serve.",
         ussenate: "Legislative member of the U.S. Senate. Special duties include ratifying treaties and approving or rejecting presidential appointments. There are exactly two elected Senators per state, regardless of population. A Senate term is six years and there is no limit to the number of terms an individual can serve.",
-        governor: "This person leads a state and is elected by the people who reside in that state. The Governor sends proposed legislation to the state’s legislative body. The governor has veto power for all state legislation. ",
-        lgovernor: "The second ranking state official behind the state governor. In about half of the states in the country, a lieutenant governor presides over the senate and can break ties the way a vice president can in the U.S. Senate.",
-        stateattorneygeneral: "Chief legal officers of their state or territory. They advise and represent their legislature and state agencies and act as the “People’s Lawyer” for the citizens. Most are elected, though a few are appointed by the governor.",
-        statedelegate: "A member of the state legislature. During legislative session, this person works with other state legislature members to approve the state budget, and considers legislation introduced by the state governor or other members of the legislative body among other duties. Each state’s Constitution sets out the term limits and eligibility of state legislative members.",
-        statesenator: "A member of the state legislature. During legislative session, this person works with other state legislature members to approve the state budget, and considers legislation introduced by the state governor or other members of the legislative body among other duties. Each state’s Constitution sets out the term limits and eligibility of state legislative members.",
+        governor: "This person leads a state and is elected by the people who reside in that state. The Governor sends proposed legislation to the state's legislative body. The governor has veto power for all state legislation. ",
+        lgovernor: "The second ranking state official behind the state governor. In about half of the states in the country, a lieutenant governor presides over the senate and can break ties the way a Vice-President can in the U.S. Senate.",
+        stateattorneygeneral: "Chief legal officers of their state or territory. They advise and represent their legislature and state agencies and act as the 'People's Lawyer' for the citizens. Most are elected, though a few are appointed by the governor.",
+        statedelegate: "A member of the state legislature. During legislative session, this person works with other state legislature members to approve the state budget, and considers legislation introduced by the state governor or other members of the legislative body among other duties. Each state's Constitution sets out the term limits and eligibility of state legislative members.",
+        statesenator: "A member of the state legislature. During legislative session, this person works with other state legislature members to approve the state budget, and considers legislation introduced by the state governor or other members of the legislative body among other duties. Each state's Constitution sets out the term limits and eligibility of state legislative members.",
         sheriff: "An elected officer of a city, town, or village who serves as the chief of all police protection and local correctional operations. A sheriff enforces county law.",
-        mayor: "This person leads a town or city. They carry out the state budget and decisions made by the Town/City Council or County Commission. ",
-        commissioner: "An elected officer who serve as local legislators and make laws about budgets for city or county.",
-        councilmember: "An elected officer who serve as local legislators and make laws about budgets for city or county.",
+        mayor: "This person leads a town or city. They carry out the state budget and decisions made by the Town/City Council or County Commission.",
+        commissioner: "An elected officer who serves as local legislators and make laws about budgets for city or county.",
+        councilmember: "An elected officer who serves as local legislators and make laws about budgets for city or county.",
         treasurer: "The treasurer is an elected constitutional officer charged with the collection, custody, and disbursement of funds. Duties also include collection and reporting on funds, though exact roles vary by state and locality.",
-        commissionerofrevenue: "The commissioner of the revenue, an elected constitutional officer, prepares real estate and personal property tax books and bills; assesses personal property, machinery and tools, merchants’ capital, and some business taxes; and, in some cities, assesses real estate. They are also the receiving point for state income tax forms. Terms vary by state and locality.",
+        commissionerofrevenue: "The commissioner of the revenue, an elected constitutional officer, prepares real estate and personal property tax books and bills; assesses personal property, machinery and tools, merchants' capital, and some business taxes; and, in some cities, assesses real estate. They are also the receiving point for state income tax forms. Terms vary by state and locality.",
         clerkcircuitcourt: "The clerk of the circuit court-an elected constitutional officer- works with the judge on coordinating trial schedules, maintaining jury lists, and handling other duties related to circuit court trials. The Clerk of Circuit Court also handles general record keeping for the locality: recordings of all documents relating to land transfers, deeds of trust, mortgages, births, deaths, wills and divorces – as well as recording election results and issuing hunting, fishing, and marriage licenses. Terms vary by state and locality."
     };
 
 
     // Declare functions
 
+    // Detects URL parameters and executes accordingly
     function activateUrlParameters(url) {
         url = url.replace(/</g, "&lt;").replace(/>/g, "&gt;");
         var parameters = getParameters(url);
@@ -74,6 +70,7 @@
         }
     };
 
+    // Helps activateUrlParameters(url)
     function getParameters(url) {
         try {
             var parameters = {};
@@ -88,55 +85,47 @@
         }
     };
 
-    function startPersonalizedGuide(locationString) {
-
-        Promise.all([
-            apiPullReps(locationString),
-            apiPullCoords(locationString)
-        ]).then(function (apiValues) {
-
-            // unpack the loaded data into variables
-            //var [csvData, jsonStates] = apiValues
-
-        })
-
-    };
 
     // Event Listeners
+    
+//    $("#c-header-tab-menu").click(function () {
+//        $("#dropdownMenu1").click()
+//    });
+    
+    // "Find Representatives" button, executes address-find
     $("#c-btn-list-generate").click(function () {
         generateReps_listPage_input();
     });
+    
+    // If you hit Enter on the keyboard for the List page Address Search, this works too
     $('#c-input-list-address').keypress(function (e) {
         if (e.which == 13) {
             generateReps_listPage_input();
             return false; //<---- Add this line
         }
     });
+    
+    // "Full Representative Info" button on the Map page after selecting a location
     $('#c-page-map-generatedReps').on("click", "#c-page-map-2ListButton", function () {
-        console.log(apiValues_map);
 
-        apiValues_map[1] = {
-            results: [{
-                geometry: {
-                    location: {
-                        lat: apiValues_map_coords["lat"],
-                        lng: apiValues_map_coords["lng"]
+        if (true) {
+            apiValues_map[1] = {
+                results: [{
+                    geometry: {
+                        location: {
+                            lat: apiValues_map_coords["lat"],
+                            lng: apiValues_map_coords["lng"]
+                        }
                     }
-                }
             }]
+            };
         };
-
-        console.log(apiValues_map[1]);
-        //        console.log(apiValues_list[1]);
-
-        //        apiValues_map[1]["results"][0]["geometry"]["location"]["lat"] = apiValues_map_coords["lat"];
-        //        
-        //        apiValues_map[1]["results"][0]["geometry"]["location"]["lng"] = apiValues_map_coords["lng"];
 
         generateReps_listPage_fromMap(apiValues_map)
     });
 
-    $("#c-page-list-supplementalToggle").click(function () {
+    // Toggles supplemental information on the list page
+    $(".c-page-list-panel2-text").click(function () {
         if (supplementaryOn) {
             $("#supplementaryCSS").html(
                 "#c-page-list .supplemental{display: none !important}"
@@ -152,6 +141,7 @@
         }
     })
 
+    // helper function, gets the Address value and passes it to the html generator
     function generateReps_listPage_input() {
 
         var locationString = $("#c-input-list-address").val();
@@ -159,29 +149,41 @@
 
     };
 
+    // passes command along from map page to generate the "snapshot" html
     function generateReps_mapPage_input(locationString) {
 
         generateReps_mapPage_apiPull(locationString)
 
     };
 
+    // helper function for displaying the representatives, activates both google APIs
     function generateReps_listPage_apiPull(locationString) {
-        $("#c-page-list-generatedReps").html("")
         Promise.all([
             apiPullReps(locationString),
             apiPullCoords(locationString)
         ]).then(function (apiValues) {
 
+            // if the pull was successful
             if (apiValues[0]) {
+                
+                // Add elements to the list page now that there is data to work with
+                $("#c-page-list-generatedReps").html("");
+                $("#c-page-list-banner-content-body-panel2").css("display", "inline-block");
+                $(".c-page-list-panel2-text").show();
+
+
                 apiValues_list = apiValues;
-                console.log(apiValues[1]);
+                console.log("TEST");
+                console.log(apiValues);
+                console.log(apiValues_list);
                 $("#c-input-list-address").val("");
+                
+                // generate the HTML
                 $("#c-page-list-generatedReps").append(generateRepHtml(apiValues, 0));
-                console.log(makeAddressUrlString([
-                    apiValues[0]["normalizedInput"]
-                ]));
+                
+                // Set up the URL sharing functionality
                 var urlString =
-                    "https://beta.ourreps.org?page=list&address=" +
+                    "https://ourreps.org?page=list&address=" +
                     makeAddressUrlString([
                         apiValues[0]["normalizedInput"]
                     ]);
@@ -195,18 +197,14 @@
                     map_pageList.removeLayer(currentMarker_pageList);
                 } catch (err) {}
                 var apiCoords = apiValues[1]["results"][0]["geometry"]["location"];
-                console.log(apiCoords)
                 var latlng_pageList = L.latLng(apiCoords["lat"], apiCoords["lng"]);
                 currentMarker_pageList = new L.marker(latlng_pageList).addTo(map_pageList);
-
                 var boundsRadius = 0.012;
-
                 var southWest = L.latLng(apiCoords["lat"] - boundsRadius + 0.003, apiCoords["lng"] - boundsRadius);
                 var northEast = L.latLng(apiCoords["lat"] + boundsRadius + 0.003, apiCoords["lng"] + boundsRadius);
                 var locationBounds = L.latLngBounds(southWest, northEast);
-
                 map_pageList.flyToBounds(locationBounds, {
-                    duration: 1.5,
+                    duration: 2,
                 });
 
                 applySupplementaryInformation()
@@ -218,43 +216,53 @@
 
         })
     };
-
+    
+    // helper function for displaying the representatives in snapshot format
     function generateReps_mapPage_apiPull(locationString) {
-        $("#c-page-map-generatedReps").html("")
+
         Promise.all([
             apiPullReps(locationString),
             ""
 //            apiPullCoords(locationString)
         ]).then(function (apiValues) {
+            
+            // if the pull was successful
             if (apiValues[0]) {
+                $("#c-page-map-generatedReps").html("");
                 apiValues_map = apiValues;
-                console.log("apiValues_map");
-                console.log(apiValues_map);
                 //                apiValues_map[1] = 
+                
+                // generate the HTML
                 $("#c-page-map-generatedReps").append(generateRepHtml(apiValues, 2))
             };
+            
+            // set up the snapshot info panel
             $("#c-page-map .repNameWrapper").prepend(
                 "<span class='glyphicon glyphicon-user'></span> "
             );
             $(".repContactaddressDiv").append(
-                "<button class='btn' id='c-page-map-2ListButton'>Full Info</button> "
+                "<button class='btn' id='c-page-map-2ListButton'>Full Representative Info</button> "
             );
 
         })
     };
-
+    
+    // helper function, gets the Address value and passes it to the html generator
     function generateReps_listPage_fromMap(apiValues) {
         changePage_map2list()
+        
+        // if pull is successful
         if (apiValues[0]) {
+            
+            // add elements to work with listed info
             $("#c-page-list-generatedReps").html("");
-            apiValues_list = apiValues;
-            console.log(apiValues[1]);
+            $("#c-page-list-banner-content-body-panel2").css("display", "inline-block");
+            $(".c-page-list-panel2-text").show();
             $("#c-page-list-generatedReps").append(generateRepHtml(apiValues, 0));
-            console.log(makeAddressUrlString([
-                    apiValues[0]["normalizedInput"]
-                ]));
+            
+            // set up url functionality
             var urlString =
-                "https://beta.ourreps.org?page=list&address=" +
+                "https://ourreps.org?page=list&address=" +
                 makeAddressUrlString([
                         apiValues[0]["normalizedInput"]
                     ]);
@@ -267,13 +275,12 @@
             try {
                 map_pageList.removeLayer(currentMarker_pageList);
             } catch (err) {};
-            var apiCoords = apiValues_list[1]["results"][0]["geometry"]["location"];
-            console.log(apiCoords);
+            console.log("PROBLEM AREA ?");
+            console.log(apiValues_map);
+            var apiCoords = apiValues_map[1]["results"][0]["geometry"]["location"];
             var latlng_pageList = L.latLng(apiCoords["lat"], apiCoords["lng"]);
             currentMarker_pageList = new L.marker(latlng_pageList).addTo(map_pageList);
-
             var boundsRadius = 0.012;
-
             var southWest = L.latLng(parseFloat(apiCoords["lat"]) - boundsRadius, parseFloat(apiCoords["lng"]) - boundsRadius);
             var northEast = L.latLng(parseFloat(apiCoords["lat"]) + boundsRadius, parseFloat(apiCoords["lng"]) + boundsRadius);
             var locationBounds = L.latLngBounds(southWest, northEast);
@@ -284,11 +291,11 @@
             }, 200);
             setTimeout(function () {
                 map_pageList.flyToBounds(locationBounds, {
-                    duration: 1.5,
+                    duration: 2,
                 })
 
             }, 250);
-            
+
             applySupplementaryInformation()
 
         } else {
@@ -297,15 +304,15 @@
         }
     };
 
+    // Backbone for creating the HTML string
     function generateRepHtml(apiValues, skipVal) {
 
         if (true) {
             var [repsObject, locationObject] = apiValues;
 
-
+            // prep lists for populating
             var repHtmlStringsList = [];
             var officeHtml2dArray = [];
-
 
             repHtmlStringsList.push(
                 "<div class='c-generated-address'>" +
@@ -316,7 +323,6 @@
                 "</div>"
             );
 
-            //            for (i_office in repsObject["offices"]) {
             for (var i_office = skipVal; i_office < repsObject["offices"].length; i_office++) {
 
                 officeHtml2dArray.push(
@@ -324,12 +330,9 @@
                     makeOfficeHtmlString(repsObject, i_office)]
                 );
 
-
             };
 
             officeHtml2dArray.sort(compare)
-
-
 
             var currentGroupId = 10
             var lastGroupId = 0
@@ -391,6 +394,7 @@
 
     };
 
+    // function which sorts by one column of a 2d array, but keeps the order for items already in order
     function compare(a, b) {
         if (a[1] < b[1])
             return -1;
@@ -399,6 +403,7 @@
         return a[0] - b[0];
     }
 
+    // creates the HTML string for each repCard (each rep)
     function makeOfficeHtmlString(repsObject, i_office) {
 
         var officialIndicesList = repsObject["offices"][i_office]["officialIndices"]
@@ -436,17 +441,16 @@
                 "</div>"
             ];
 
+            // concatenate entire list into the returnVar string
             for (i_item in returnVarList) {
                 returnVar += returnVarList[i_item]
             };
         }
 
-
-
         return returnVar
     };
-    // 1601 fieldthorn dr reston va
 
+    // helper function, makes one part of the repCard
     function makeRepCardString_img(officialsRepInfo) {
         if (officialsRepInfo["photoUrl"]) {
             var returnVar = "<div class='repImage'><img src='" + officialsRepInfo["photoUrl"] + "'></div>"
@@ -457,7 +461,8 @@
         }
 
     };
-
+    
+    // helper function, makes one part of the repCard
     function makeRepCardString_nameParty(officialsRepInfo) {
         var test = ["<span class='repName'>",
                         String(officialsRepInfo["name"]),
@@ -482,6 +487,7 @@
         return returnVar
     };
 
+    // helper function, makes one part of the repCard
     function makeRepCardString_address(addressInfo) {
         if (addressInfo) {
             var returnVar = "<div class='repContactAddress'>"
@@ -505,6 +511,7 @@
 
     };
 
+    // helper function, makes one part of the repCard
     function makeAddressUrlString(addressInfo) {
         if (addressInfo) {
             var returnVar = ""
@@ -520,7 +527,6 @@
                     ""
             };
             //            returnVar = returnVar.replace(" ", "+");
-            console.log(returnVar.replace(/ /g, "+"));
             return returnVar.replace(/ /g, "+")
         } else {
             return ""
@@ -529,6 +535,7 @@
 
     };
 
+    // helper function, makes one part of the repCard
     function makeRepCardString_urls(officialsRepInfo) {
         if (officialsRepInfo["urls"]) {
             var returnVar = "<div class='repContactUrls'>"
@@ -548,6 +555,7 @@
 
     };
 
+    // helper function, makes one part of the repCard
     function makeRepCardString_channels(officialsRepInfo) {
         if (officialsRepInfo["channels"]) {
             var returnVar = "<div class='repContactChannels'>"
@@ -567,8 +575,7 @@
 
     };
 
-
-
+    // helper function, makes one part of the repCard
     function makeRepCardString_phones(officialsRepInfo) {
         if (officialsRepInfo["phones"]) {
             var returnVar = "<div class='repContactPhones'>"
@@ -586,6 +593,7 @@
         }
     };
 
+    // backbone for actually making contact with the API
     function apiPullReps(locationString) {
         var apiFullURLString = "https://www.googleapis.com/civicinfo/v2/" +
             "representatives" +
@@ -599,7 +607,8 @@
             })
         );
     };
-
+    
+    // backbone for actually making contact with the API
     function apiPullCoords(locationString) {
         var apiFullURLString = "https://maps.googleapis.com/maps/api/geocode/json?" +
             "address=" + locationString +
@@ -609,17 +618,13 @@
         }));
     };
 
+    // populated the HTML after-the-fact with appropriate supplemental information
     function applySupplementaryInformation() {
         console.log("Starting applySupplementaryInformation()");
 
         var currentScopeTitle = "";
 
         $("#c-page-list-generatedReps").children().each(function (index) {
-            console.log(" ");
-            console.log(index + ": " + $(this).html());
-            console.log($(this).hasClass("repGroupTitle"));
-            console.log($(this).hasClass("repSupplementalTitle"));
-            console.log($(this).hasClass("repCardWrapper"));
 
             if ($(this).hasClass("repGroupTitle")) {
                 currentScopeTitle = $(this).text()
@@ -638,21 +643,16 @@
         });
     };
 
+    // helper function, determines the appropriate description to give
     function getScopeSupplementalInfo(scopeName) {
 
-        console.log("Starting getScopeSupplementalInfo(scopeName)");
-        console.log(scopeName);
         if (scopeName.indexOf("Federal") >= 0) {
-            console.log(govScopeDescriptions["federal"]);
             return govScopeDescriptions["federal"]
         } else if (scopeName.indexOf("State") >= 0) {
-            console.log(govScopeDescriptions["federal"]);
             return govScopeDescriptions["state"]
         } else if (scopeName.indexOf("County") >= 0) {
-            console.log(govScopeDescriptions["federal"]);
             return govScopeDescriptions["county"]
         } else if (scopeName.indexOf("City") >= 0) {
-            console.log(govScopeDescriptions["federal"]);
             return govScopeDescriptions["city"]
         } else {
             return ""
@@ -661,6 +661,7 @@
         return "scope supplemental info for " + scopeName
     };
 
+    // helper function, determines the appropriate description to give
     function getRepSupplementalInfo(officeName) {
         if (officeName.indexOf("Vice-President of the United States") >= 0) {
             return govOfficeDescriptions["vpotus"]
@@ -675,9 +676,7 @@
         } else if (officeName.indexOf("Governor") >= 0) {
             return govOfficeDescriptions["governor"]
         } else if (officeName.indexOf("Attorney General") >= 0) {
-            return govOfficeDescriptions["attorneygeneral"]
-        } else if (officeName.indexOf("Attorney General") >= 0) {
-            return govOfficeDescriptions["attorneygeneral"]
+            return govOfficeDescriptions["stateattorneygeneral"]
         } else if (officeName.indexOf("State House") >= 0 && officeName.indexOf("District") >= 0) {
             return govOfficeDescriptions["statedelegate"]
         } else if (officeName.indexOf("Assembly") >= 0 && officeName.indexOf("District") >= 0) {
@@ -703,6 +702,7 @@
     };
 
 
+    // Start of the main loop
     main()
 
 
@@ -721,7 +721,9 @@
     // PAGE: MAP
 
     // initialize map-page map
-    var map_pageMap = L.map('c-page-map-mapFrame').setView([40, -100], 4);
+    var map_pageMap = L.map('c-page-map-mapFrame',{
+        attributionControl: false
+    }).setView([40, -100], 4);
 
     var Esri_WorldGrayCanvas = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}', {
         //        attribution: 'Data: <a href="https://ebird.org/">eBird</a> (2012-2016) |  Illustrations &copy; <a href="http://www.sibleyguides.com/">David Allen Sibley</a> | Tiles &copy; Esri | <a id="aboutMap">About Map <span class="glyphicon glyphicon-info-sign"></span></a>',
@@ -755,6 +757,82 @@
     });
 
 
+    //    var districts;
+    //    var states;
+
+    Promise.all([
+        getDistricts(),
+        getStates()
+    ]).then(function (layerVals) {
+
+    })
+
+
+    function getDistricts() {
+        $.ajax("data/districts_115th_congress.geojson", {
+            dataType: "json",
+            success: function (response) {
+
+                var myStyle = {
+                    "color": "#94bfa2",
+                    "weight": 1,
+                    "fillColor": "transparent"
+                };
+                //Creates the symbology & popups using functions above in this function
+                var districts = new L.geoJson(response, {
+                    style: myStyle
+                }).addTo(map_pageMap);
+
+                return districts
+
+            }
+        });
+    };
+
+    function getStates() {
+        $.ajax("data/states.geojson", {
+            dataType: "json",
+            success: function (response) {
+
+                var myStyle = {
+                    "color": "#2e8540",
+                    "weight": 2,
+                    "fillColor": "transparent"
+                };
+                //Creates the symbology & popups using functions above in this function
+                var states = L.geoJson(response, {
+                    style: myStyle
+                }).addTo(map_pageMap);
+
+                return states
+
+            }
+        });
+    };
+
+
+
+    //    console.log(districts);
+    //    console.log(states);
+    console.log(map_pageMap);
+    console.log("map_pageMap.eachLayer");
+
+    map_pageMap.eachLayer(function (layer) {
+        console.log(layer)
+    });
+
+    //    if (map_pageMap.hasLayer(districts)) {
+    //        map_pageMap.removeLayer(districts);
+    //    } else {
+    //        map_pageMap.addLayer(districts);
+    //    }
+
+    //    var overlayMaps = {
+    //        "States": states,
+    //        "Congressional Districts": congressionalDistricts
+    //    };
+    //
+    //    L.control.layers(overlayMaps).addTo(map);
 
     // PAGE: LIST
 
@@ -784,6 +862,8 @@
         }, 200);
         try {
             if (apiValues_list[0]) {
+                //                apiValues_map = apiValues_list;
+                apiValues_map_coords = apiValues_list[1]["results"][0]["geometry"]["location"];
                 var apiCoords = apiValues_list[1]["results"][0]["geometry"]["location"];
                 var latLongString = apiCoords["lat"] + ", " + apiCoords["lng"];
                 generateReps_mapPage_input(latLongString);
@@ -800,12 +880,13 @@
 
                 setTimeout(function () {
                     map_pageMap.flyToBounds(locationBounds, {
-                        duration: 1.5,
+                        duration: 2,
                     })
-
                 }, 250);
             }
-        } catch (err) {}
+        } catch (err) {
+            console.log(err)
+        }
     });
 
     var currentMarker_listPage;
@@ -837,7 +918,8 @@
 
 })();
 
-// Page changing animations
+
+// Functions to ensure proper page changing animations
 
 function changePage_guide2map() {
     $("#c-page-guide").hide("slide", {
@@ -937,7 +1019,7 @@ function changePage_map2guide() {
     $("#c-header-tab-guide").css({
         'font-weight': '800',
         'color': 'white',
-        'background-color': '#981b1e',
+        'background-color': '#112e51', //oldred
         'border-bottom': '0px'
     });
     $("#c-header-tab-list").css({
@@ -1029,7 +1111,7 @@ function changePage_list2guide() {
     $("#c-header-tab-guide").css({
         'font-weight': '800',
         'color': 'white',
-        'background-color': '#981b1e',
+        'background-color': '#112e51', //oldred
         'border-bottom': '0px'
     });
 }

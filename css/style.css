@@ -11,7 +11,7 @@ body {
 
 #c-application-header {
     position: absolute;
-    top:0;
+    top: 0;
     width: 100%;
     background-color: transparent;
     z-index: 50000;
@@ -20,11 +20,12 @@ body {
 
 #c-header-title-wrapper {
     padding-left: 10px;
-    padding-right: 15px;
+    padding-right: 0px;
     padding-top: 10px;
     padding-bottom: 4px;
     font: 14px/16px aerial, helvetica, sans-serif;
     z-index: 50001;
+    margin-right: 0px
 }
 
 #c-header-title-text {
@@ -32,7 +33,7 @@ body {
 }
 
 #c-header-title-text-OUR {
-    color: #981b1e
+    color: #112e51/*oldred*/
 }
 
 #c-header-title-text-REPS {
@@ -48,7 +49,7 @@ body {
     top: 0px;
     right: 0px;
     min-width: 200px;
-    z-index: 1000
+    z-index: 1000;
 }
 
 .c-header-tabs {
@@ -77,7 +78,8 @@ body {
 #c-header-tab-guide {
     font-weight: 800;
     color: white;
-    background-color: #981b1e;
+    background-color: #112e51/*oldred*/
+    ;
 }
 
 #c-header-tab-map {
@@ -92,17 +94,17 @@ body {
 }
 
 #c-header-tab-menu {
-    width: 38px !important;
+    width: 47px !important;
     padding-left: 12px !important;
-    padding-right: 15px !important;
+    padding-right: 11px !important;
     padding-top: 10px !important;
     padding-bottom: 4px !important;
-/*    border-right: 2px solid black;*/
+    /*    border-right: 2px solid black;*/
     height: 39px;
 }
 
 #c-header-tab-menu-dropdown {
-    margin-right: -14px;
+    margin-right: -10px;
     margin-top: 16px;
 }
 
@@ -111,7 +113,7 @@ body {
     top: 38px;
     left: 0;
     width: 100%;
-/*    min-height: 400px;*/
+    /*    min-height: 400px;*/
     z-index: 1;
     text-align: center;
 }
@@ -120,7 +122,7 @@ body {
 
 .c-pages-banner {
     width: 100%;
-    height: 50px;
+    /*    height: 50px;*/
     z-index: 500;
 }
 
@@ -130,16 +132,17 @@ body {
     left: 0;
     background-color: white;
     height: 39px;
-    width: calc(100% - 230px);
+    width: calc(100% - 160px);
     z-index: 40000;
     border-bottom: 2px solid black;
 }
-#c-header-tab-menu{
+
+#c-header-tab-menu {
     background-color: white
 }
 
 #c-page-guide-banner {
-    background-color: #981b1e
+    background-color: #112e51/*oldred*/
 }
 
 
@@ -154,6 +157,57 @@ body {
 }
 
 #c-page-guide-body {}
+
+#c-page-banner-contentWrapper {
+    width: 400px;
+    display: inline-block;
+}
+
+#c-page-guide-banner-content-title {
+    font-size: 36px;
+    font-weight: 600;
+    width: 100%;
+    display: flex;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    padding-top: 15px;
+    padding-bottom: 5px;
+    letter-spacing: 2px;
+}
+
+
+#c-page-guide-banner-content-subTitle {
+    letter-spacing: 2px;
+    margin-top: -5px;
+    margin-bottom: 30px;
+    color: white;
+    text-align: center;
+}
+
+#c-startWelcome {
+    color: white;
+    padding-top: 30px;
+    margin-bottom: 30px;
+    font-size: 22px
+}
+
+.c-startText {
+    color: white;
+    margin-top: 10px;
+    margin-bottom: 30px;
+    text-align: left;
+    width: 320px;
+    display: inline-block
+}
+
+.c-startButton {
+    width: 150px;
+    font-weight: 600;
+    letter-spacing: 1px;
+}
+
 
 #c-page-map {
     display: none;
@@ -193,6 +247,7 @@ body {
     align-items: center;
     color: white;
 }
+
 #c-page-list-banner-content {
     width: 980px;
     min-height: 20px;
@@ -219,61 +274,72 @@ body {
     margin-bottom: 10px
 }
 
+
 .c-page-list-banner-content-body-panel {
     width: 32%;
     height: auto;
     display: inline-block;
     padding: 15px;
     margin: 0;
-    vertical-align:top;
+    vertical-align: top;
     text-align: left;
-    
+
 }
 
-#c-page-list-banner-content-body-panel2{
+#c-page-list-banner-content-body-panel2 {
     word-wrap: break-word;
+    display: none;
 }
 
-#c-page-list-banner-content-body-panel2 .form-group input{
+#c-page-list-banner-content-body-panel2 .form-group input {
     display: inline-block;
-/*    width: calc(60% - 10px);*/
-    background-color: rgb(210,210,210);
+    /*    width: calc(60% - 10px);*/
+    background-color: rgb(210, 210, 210);
     margin-bottom: 15px;
 }
 
-#c-page-list-banner-content-body-panel2 .form-group button{
+#c-page-list-banner-content-body-panel2 .form-group button {
     display: inline-block;
     width: calc(50% - 2px);
 }
 
-#c-input-shareableUrl{
+#c-input-shareableUrl {
     cursor: default
 }
 
-#c-page-list-banner-content-body-panel1 button{
+#c-page-list-banner-content-body-panel1 button {
     width: calc(100% - 0px);
 }
 
-#c-page-list-banner-content-body-panel1 .c-page-list-panel2-text div{
-    display: inline-block;
-    vertical-align:top;
+#c-btn-list-generate-guide {
+    margin-top: 15px
 }
 
-#c-page-list-banner-content-body-panel1 .c-page-list-panel2-text{
+#c-page-list-banner-content-body-panel1 .c-page-list-panel2-text div {
+    display: inline-block;
+    vertical-align: top;
+}
+
+#c-page-list-banner-content-body-panel1 .c-page-list-panel2-text {
     cursor: pointer
 }
 
-#c-page-list-banner-content-body-panel1 .c-page-list-panel2-text div:nth-child(1){
+#c-page-list-banner-content-body-panel1 .c-page-list-panel2-text div:nth-child(1) {
     margin-top: 0.5px;
 }
 
-#c-page-list-banner-content-body-panel1 .c-page-list-panel2-text div:nth-child(2){
+#c-page-list-banner-content-body-panel1 .c-page-list-panel2-text div:nth-child(2) {
     width: calc(100% - 20px);
     padding-left: 2px
 }
 
-#c-page-list-banner-content-body-panel3 {
+#c-page-list-supplementalToggle {}
+
+.c-page-list-panel2-text {
+    display: none
 }
+
+#c-page-list-banner-content-body-panel3 {}
 
 .c-page-list-panel2-text {
     margin-top: 15px;
@@ -281,10 +347,17 @@ body {
     padding-left: 1px
 }
 
+#c-page-list-generatedReps:nth-child(1) {
+    text-align: center;
+}
 
-#c-page-list .repContactaddressDiv{
+#c-page-list .c-generated-address .repContactaddressDiv {
     text-align: left;
     font-weight: 600;
+}
+
+#c-page-list .c-generated-address {
+    text-align: left !important;
 }
 
 /*rep css for page list*/
@@ -296,68 +369,78 @@ body {
     margin-bottom: 20px;
     text-align: center;
 }
+
 #c-page-list .repCardWrapper {
     margin-bottom: 20px;
     width: 100%;
     text-align: center;
 }
+
 #c-page-list .repCard {
     display: inline-block;
     padding: 20px;
     border-top: 2px solid black;
-/*    border-top: 2px solid #0071bc;*/
-/*
+    /*    border-top: 2px solid #0071bc;*/
+    /*
     border: 4px solid #0071bc;
     border-radius: 40px;
 */
     width: auto;
     text-align: left;
 }
+
 #c-page-list .repImage {
     width: 100px;
     height: 100px;
     overflow: hidden;
     border-radius: 50%;
     display: inline-block;
-    vertical-align:top;
+    vertical-align: top;
     margin-right: 20px;
-    
+
 }
+
 #c-page-list .repImage img {
     max-width: 100px;
     background-color: lightgray
 }
+
 #c-page-list .repContentWrapper {
     display: inline-block;
-    vertical-align:top;
+    vertical-align: top;
     max-width: 530px;
 }
+
 #c-page-list .repInfoWrapper {
     display: inline-block;
-    vertical-align:top;
+    vertical-align: top;
     width: 250px
 }
+
 #c-page-list .repName {
     font-weight: 600;
 }
+
 #c-page-list .repContactsWrapper {
     display: inline-block;
-    vertical-align:top;
+    vertical-align: top;
     margin-left: 30px;
     width: 250px;
     overflow-wrap: break-word;
     word-break: break-word;
 }
+
 #c-page-list .repSupplementalInfo {
     display: inline-block;
-    vertical-align:top;
+    vertical-align: top;
     width: 100%;
-/*    overflow-wrap: break-word;*/
+    /*    overflow-wrap: break-word;*/
     padding-top: 5px;
     margin-top: 20px;
     border-top: 1px solid #aeb0b5;
     color: #5b616b;
 }
+
 #c-page-list .repSupplementalTitle {
     text-align: center;
     align-content: center;
@@ -366,14 +449,16 @@ body {
     margin-top: -20px;
     margin-bottom: 25px;
 }
+
 #c-page-list .repSupplementalTitle div {
     text-align: justify !important;
     display: inline-block;
     max-width: 690px;
     color: #5b616b;
 }
-#c-page-list .repContactChannels {
-}
+
+#c-page-list .repContactChannels {}
+
 #c-page-list .repOffice {
     font-size: 22;
     color: black;
@@ -381,28 +466,30 @@ body {
     margin-bottom: 5px;
 }
 
-#c-page-list-mapFrame{
+#c-page-list-mapFrame {
     height: 155px;
     width: 100%;
     cursor: pointer !important;
+    /*    margin-top: 25px*/
 }
-#c-page-map .c-address-header{
+
+#c-page-map .c-address-header {
     display: none;
 }
 
-#c-page-map .supplemental{
+#c-page-map .supplemental {
     display: none !important;
 }
 
 /*rep css for page map*/
 
-#c-page-map #c-page-map-2ListButton{
+#c-page-map #c-page-map-2ListButton {
     display: block;
     margin-top: 10px;
     font-weight: 600;
 }
 
-#c-page-list #c-page-map-2ListButton{
+#c-page-list #c-page-map-2ListButton {
     display: none;
 }
 
@@ -411,13 +498,16 @@ body {
     font-weight: 600;
     padding: 10px;
     text-align: left;
-    border-top: 2px solid black;
+    border-top: 2px solid lightgray;
+    margin-top: 10px
 }
+
 #c-page-map .repCardWrapper {
     margin-bottom: 5px;
     width: 100%;
     text-align: left;
 }
+
 #c-page-map .repCard {
     display: inline-block;
     margin-left: 10px;
@@ -425,73 +515,83 @@ body {
     margin-bottom: 10px;
     color: #323a45;
     width: 100%;
-/*    border-top: 2px solid black;*/
-/*    border-top: 2px solid #0071bc;*/
-/*
+    /*    border-top: 2px solid black;*/
+    /*    border-top: 2px solid #0071bc;*/
+    /*
     border: 4px solid #0071bc;
     border-radius: 40px;
 */
     width: auto;
     text-align: left;
 }
+
 #c-page-map .repImage {
     width: 30px;
     height: 30px;
     overflow: hidden;
     border-radius: 50%;
     display: none;
-/*    display: inline-block;*/
-    vertical-align:top;
+    /*    display: inline-block;*/
+    vertical-align: top;
     margin-right: 3px;
-    
+
 }
+
 #c-page-map .repImage img {
     max-width: 30px;
     background-color: lightgray
 }
+
 #c-page-map .repContentWrapper {
     display: inline-block;
-    vertical-align:top;
+    vertical-align: top;
 }
+
 #c-page-map .repInfoWrapper {
     display: inline-block;
-    vertical-align:top;
+    vertical-align: top;
     width: 250px
 }
+
 #c-page-map .repName {
     font-weight: 600;
 }
+
 #c-page-map .repContactsWrapper {
     display: none;
 }
+
 #c-page-map .repContactPhones {
     display: none;
 }
+
 #c-page-map .repCard .repContactAddress {
     display: none;
 }
-#c-page-map .repContactaddressDiv{
+
+#c-page-map .repContactaddressDiv {
     text-align: left;
     padding: 10px;
     margin-top: -10px;
     display: inline-block;
 }
-#c-page-map .repContactChannels {
-}
+
+#c-page-map .repContactChannels {}
+
 #c-page-map .repOffice {
     font-size: 14;
     color: black;
     font-weight: 600;
     width: 100%;
     display: inline-block;
-/*    text-decoration: underline*/
+    /*    text-decoration: underline*/
 }
 
 #c-page-map .repNameWrapper {
     display: inline-block;
 }
 
-#c-page-map .repNameWrapper .glyphicon-user{
+#c-page-map .repNameWrapper .glyphicon-user {
     color: #aeb0b5
 }
 
@@ -499,14 +599,14 @@ body {
 
 #c-page-map-banner {
     background-color: white;
-/*
+    /*
     border-top: 2px solid black;
     border-bottom: 2px solid gray;
 */
     height: 0px !important;
 }
 
-#c-page-map-panel{
+#c-page-map-panel {
     overflow-y: scroll;
     background-color: white;
     position: absolute;
@@ -517,35 +617,118 @@ body {
     text-align: left;
 }
 
-#c-page-map-panel-title{
+#c-page-map-panel-title {
     text-align: left;
     padding: 10px;
     font-size: 18px;
     font-weight: 600
 }
 
-#c-page-map-generatedReps{
+#c-page-map-generatedReps {
     width: 100%
 }
-#c-page-map-placeholderText{
+
+#c-page-map-placeholderText {
     text-align: left;
     padding: 10px
 }
-#c-page-map-mapFrameWrapper{
+
+#c-page-map-mapFrameWrapper {
     background-color: lightgray;
     position: absolute;
     top: 0px;
     right: 0;
     width: calc(100vw - 320px);
     height: 100vh;
-/*    height: calc(100vh - 67px);*/
+    /*    height: calc(100vh - 67px);*/
     border-left: 2px solid gray;
-/*
+    /*
     border-right: 2px solid gray;
     border-bottom: 2px solid gray;
 */
 }
 
-#c-page-map-mapFrame .leaflet-top{
-    margin-top:40px;
+#c-page-map-mapFrame .leaflet-top {
+    margin-top: 40px;
+}
+
+#legendWrapper {
+    position: absolute;
+    bottom: 0px;
+    right: 0px;
+    z-index: 300000;
+    font-size: 14px;
+    background-color: white;
+    /*    background-color: rgba(207,206,211,1);*/
+    border-radius: 0px;
+    padding: 10px;
+    width: 140px;
+    text-align: right;
+    box-shadow: 0px 1px 2px rgb(160, 160, 160);
+}
+
+#legendTitle {
+    font-size: 18px;
+    font-weight: 400;
+    margin-top: -3px;
+    padding-bottom: 5px;
+    text-align: center
+}
+
+.legendRow {
+    margin-top: 5px
+}
+
+.legendRow div {
+    display: inline-block !important;
+    min-height: 20px;
+    min-width: 20px;
+}
+
+#legendBox_data {
+    width: 20px;
+    height: 20px;
+    background-color: rgb(238, 238, 238);
+    border: 2px solid #2e8540;
+    margin-bottom: -4px;
+
+}
+
+#legendBox_noData {
+    width: 20px;
+    height: 20px;
+    background-color: rgb(238, 238, 238);
+    border: 2px solid #94bfa2;
+    margin-bottom: 17px;
+}
+
+.legendBox_text {
+    font-size: 14px;
+    width: 95px;
+    text-align: left;
+}
+
+@media screen and (max-width: 930px) {
+    #c-page-list .repContactsWrapper {
+        margin-left: 10px;
+        width: 200px;
+    }
+    #c-page-list .repContentWrapper {
+        display: inline-block;
+        vertical-align: top;
+        max-width: 410px;
+    }
+    #c-page-list .repInfoWrapper {
+        display: inline-block;
+        vertical-align: top;
+        width: 200px
+    }
+    #c-page-list .repImage {
+        width: 80px;
+        height: 80px;
+    }
+
+    #c-page-list .repImage img {
+        max-width: 80px;
+    }
 }
