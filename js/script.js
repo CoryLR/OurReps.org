@@ -32,6 +32,30 @@
     var apiValues_map_coords;
     var apiValues_list;
     var supplementaryOn = false;
+    var govScopeDescriptions = {
+        federal: "The Federal Government governs all United States, Districts and Territories. It is made up of three parts: the Executive, Legislative and Judicial branches. You vote directly for your federal representatives in the Executive branch (the President & Vice-President) and the Legislative branch (House & Senate representatives in Congress). The Legislative Branch makes laws, the Executive Branch carries out the laws and the Judicial branch evaluates the laws; all Federal laws supersede State and Local laws.",
+        state: "States are granted all powers not reserved to the federal government. These State Governments are typically modeled after the federal government with three distinct branches of government. You vote directly for state representatives in their respective executive and legislative branches.",
+        county: "The County level is the lowest level of government besides Cities; it typically provides everyday services including police protection, fire protection, libraries and street management. You vote directly for local candidates.",
+        city: "City government is the lowest level of government; it typically provides everyday services including police protection, fire protection, libraries and street management. Depending on the state, a City can either have seperate or shared authority with the surrounding County. You vote directly for local candidates."
+    };
+    var govOfficeDescriptions = {
+        potus: "As head of the Executive Branch, this person serves as the chief of our country. They administer the executive branch of the government. The President serves a four-year term and can be elected no more than two times.",
+        vpotus: "This person is the next in line to the President. In addition to supporting the president, the Vice President presides over the Senate and has tie-breaking privileges.",
+        ushouse: "Legislative member of the U.S. House of Representatives. Special duties include impeachment and introducing revenue bills. There are 435 Representatives. The number of representatives each state gets is determined by its population; some states have just 2 representatives while others have as many as 40. There are additional non-voting delegates who represent the District of Columbia and the territories. A Representative serves a two-year term, and there is no limit to the number of terms an individual can serve.",
+        ussenate: "Legislative member of the U.S. Senate. Special duties include ratifying treaties and approving or rejecting presidential appointments. There are exactly two elected Senators per state, regardless of population. A Senate term is six years and there is no limit to the number of terms an individual can serve.",
+        governor: "This person leads a state and is elected by the people who reside in that state. The Governor sends proposed legislation to the state’s legislative body. The governor has veto power for all state legislation. ",
+        lgovernor: "The second ranking state official behind the state governor. In about half of the states in the country, a lieutenant governor presides over the senate and can break ties the way a vice president can in the U.S. Senate.",
+        stateattorneygeneral: "Chief legal officers of their state or territory. They advise and represent their legislature and state agencies and act as the “People’s Lawyer” for the citizens. Most are elected, though a few are appointed by the governor.",
+        statedelegate: "A member of the state legislature. During legislative session, this person works with other state legislature members to approve the state budget, and considers legislation introduced by the state governor or other members of the legislative body among other duties. Each state’s Constitution sets out the term limits and eligibility of state legislative members.",
+        statesenator: "A member of the state legislature. During legislative session, this person works with other state legislature members to approve the state budget, and considers legislation introduced by the state governor or other members of the legislative body among other duties. Each state’s Constitution sets out the term limits and eligibility of state legislative members.",
+        sheriff: "An elected officer of a city, town, or village who serves as the chief of all police protection and local correctional operations. A sheriff enforces county law.",
+        mayor: "This person leads a town or city. They carry out the state budget and decisions made by the Town/City Council or County Commission. ",
+        commissioner: "An elected officer who serve as local legislators and make laws about budgets for city or county.",
+        councilmember: "An elected officer who serve as local legislators and make laws about budgets for city or county.",
+        treasurer: "The treasurer is an elected constitutional officer charged with the collection, custody, and disbursement of funds. Duties also include collection and reporting on funds, though exact roles vary by state and locality.",
+        commissionerofrevenue: "The commissioner of the revenue, an elected constitutional officer, prepares real estate and personal property tax books and bills; assesses personal property, machinery and tools, merchants’ capital, and some business taxes; and, in some cities, assesses real estate. They are also the receiving point for state income tax forms. Terms vary by state and locality.",
+        clerkcircuitcourt: "The clerk of the circuit court-an elected constitutional officer- works with the judge on coordinating trial schedules, maintaining jury lists, and handling other duties related to circuit court trials. The Clerk of Circuit Court also handles general record keeping for the locality: recordings of all documents relating to land transfers, deeds of trust, mortgages, births, deaths, wills and divorces – as well as recording election results and issuing hunting, fishing, and marriage licenses. Terms vary by state and locality."
+    };
 
 
     // Declare functions
@@ -111,9 +135,9 @@
 
         generateReps_listPage_fromMap(apiValues_map)
     });
-    
-    $("#c-page-list-supplementalToggle").click(function() {
-        if(supplementaryOn) {
+
+    $("#c-page-list-supplementalToggle").click(function () {
+        if (supplementaryOn) {
             $("#supplementaryCSS").html(
                 "#c-page-list .supplemental{display: none !important}"
             );
@@ -169,7 +193,7 @@
                 // update map
                 try {
                     map_pageList.removeLayer(currentMarker_pageList);
-                } catch {}
+                } catch (err) {}
                 var apiCoords = apiValues[1]["results"][0]["geometry"]["location"];
                 console.log(apiCoords)
                 var latlng_pageList = L.latLng(apiCoords["lat"], apiCoords["lng"]);
@@ -182,8 +206,10 @@
                 var locationBounds = L.latLngBounds(southWest, northEast);
 
                 map_pageList.flyToBounds(locationBounds, {
-                    duration: 1,
-                })
+                    duration: 1.5,
+                });
+
+                applySupplementaryInformation()
 
             } else {
                 // display "retry address" message
@@ -240,7 +266,7 @@
             // update map
             try {
                 map_pageList.removeLayer(currentMarker_pageList);
-            } catch {};
+            } catch (err) {};
             var apiCoords = apiValues_list[1]["results"][0]["geometry"]["location"];
             console.log(apiCoords);
             var latlng_pageList = L.latLng(apiCoords["lat"], apiCoords["lng"]);
@@ -258,10 +284,12 @@
             }, 200);
             setTimeout(function () {
                 map_pageList.flyToBounds(locationBounds, {
-                    duration: 1,
+                    duration: 1.5,
                 })
 
             }, 250);
+            
+            applySupplementaryInformation()
 
         } else {
             // display "retry address" message
@@ -314,7 +342,7 @@
                         "</div>" +
                         "<div class='repSupplementalTitle supplemental'>" +
                         "<div class=''>" +
-                        "(Supplemental information goes here. Concise, 1-2 sentence scope summary.)" +
+                        "" +
                         "</div>" +
                         "</div>"
                     repHtmlStringsList.push(groupTitleHTML);
@@ -401,7 +429,7 @@
                                 makeRepCardString_channels(officialsRepInfo),
                             "</div>",
                             "<div class='repSupplementalInfo supplemental'>",
-                            "(Supplemental information goes here. The information provided should be a concise, 1-2 sentence summary of this position's roles and impact on the user's life.)",
+                            "",
                             "</div>",
                         "</div>",
                     "</div>",
@@ -581,6 +609,99 @@
         }));
     };
 
+    function applySupplementaryInformation() {
+        console.log("Starting applySupplementaryInformation()");
+
+        var currentScopeTitle = "";
+
+        $("#c-page-list-generatedReps").children().each(function (index) {
+            console.log(" ");
+            console.log(index + ": " + $(this).html());
+            console.log($(this).hasClass("repGroupTitle"));
+            console.log($(this).hasClass("repSupplementalTitle"));
+            console.log($(this).hasClass("repCardWrapper"));
+
+            if ($(this).hasClass("repGroupTitle")) {
+                currentScopeTitle = $(this).text()
+            } else if ($(this).hasClass("repSupplementalTitle")) {
+                $(this).children().text(getScopeSupplementalInfo(currentScopeTitle))
+            } else if ($(this).hasClass("repCardWrapper")) {
+
+                var currentOfficeName = $(this).children(".repCard")
+                    .children(".repContentWrapper")
+                    .children(".repOffice").text();
+                $(this).children(".repCard")
+                    .children(".repContentWrapper")
+                    .children(".repSupplementalInfo")
+                    .text(getRepSupplementalInfo(currentOfficeName))
+            }
+        });
+    };
+
+    function getScopeSupplementalInfo(scopeName) {
+
+        console.log("Starting getScopeSupplementalInfo(scopeName)");
+        console.log(scopeName);
+        if (scopeName.indexOf("Federal") >= 0) {
+            console.log(govScopeDescriptions["federal"]);
+            return govScopeDescriptions["federal"]
+        } else if (scopeName.indexOf("State") >= 0) {
+            console.log(govScopeDescriptions["federal"]);
+            return govScopeDescriptions["state"]
+        } else if (scopeName.indexOf("County") >= 0) {
+            console.log(govScopeDescriptions["federal"]);
+            return govScopeDescriptions["county"]
+        } else if (scopeName.indexOf("City") >= 0) {
+            console.log(govScopeDescriptions["federal"]);
+            return govScopeDescriptions["city"]
+        } else {
+            return ""
+        }
+
+        return "scope supplemental info for " + scopeName
+    };
+
+    function getRepSupplementalInfo(officeName) {
+        if (officeName.indexOf("Vice-President of the United States") >= 0) {
+            return govOfficeDescriptions["vpotus"]
+        } else if (officeName.indexOf("President of the United States") >= 0) {
+            return govOfficeDescriptions["potus"]
+        } else if (officeName.indexOf("United States House") >= 0) {
+            return govOfficeDescriptions["ushouse"]
+        } else if (officeName.indexOf("United States Senate") >= 0) {
+            return govOfficeDescriptions["ussenate"]
+        } else if (officeName.indexOf("Governor") >= 0 && officeName.indexOf("nant") >= 0) {
+            return govOfficeDescriptions["lgovernor"]
+        } else if (officeName.indexOf("Governor") >= 0) {
+            return govOfficeDescriptions["governor"]
+        } else if (officeName.indexOf("Attorney General") >= 0) {
+            return govOfficeDescriptions["attorneygeneral"]
+        } else if (officeName.indexOf("Attorney General") >= 0) {
+            return govOfficeDescriptions["attorneygeneral"]
+        } else if (officeName.indexOf("State House") >= 0 && officeName.indexOf("District") >= 0) {
+            return govOfficeDescriptions["statedelegate"]
+        } else if (officeName.indexOf("Assembly") >= 0 && officeName.indexOf("District") >= 0) {
+            return govOfficeDescriptions["statedelegate"]
+        } else if (officeName.indexOf("State Senate") >= 0 && officeName.indexOf("District") >= 0) {
+            return govOfficeDescriptions["statesenator"]
+        } else if (officeName.indexOf("Sheriff") >= 0) {
+            return govOfficeDescriptions["sheriff"]
+        } else if (officeName.indexOf("Mayor") >= 0) {
+            return govOfficeDescriptions["mayor"]
+        } else if (officeName.indexOf("Commissioner") >= 0) {
+            return govOfficeDescriptions["commissioner"]
+        } else if (officeName.indexOf("Council Member") >= 0) {
+            return govOfficeDescriptions["councilmember"]
+        } else if (officeName.indexOf("Treasurer") >= 0) {
+            return govOfficeDescriptions["treasurer"]
+        } else if (officeName.indexOf("Clerk") >= 0 && officeName.indexOf("Court") >= 0) {
+            return govOfficeDescriptions["clerkcircuitcourt"]
+        } else {
+            return "Visit the provided website or contact the office-holder for more information."
+        }
+
+    };
+
 
     main()
 
@@ -619,7 +740,7 @@
         generateReps_mapPage_input(latLongString);
         try {
             map_pageMap.removeLayer(currentMarker_pageMap);
-        } catch {}
+        } catch (err) {}
         currentMarker_pageMap = new L.marker(latlng).addTo(map_pageMap);
     });
 
@@ -668,7 +789,7 @@
                 generateReps_mapPage_input(latLongString);
                 try {
                     map_pageMap.removeLayer(currentMarker_pageMap);
-                } catch {}
+                } catch (err) {}
                 var latlng = L.latLng(apiCoords["lat"], apiCoords["lng"]);
                 currentMarker_pageMap = new L.marker(latlng).addTo(map_pageMap);
 
@@ -679,12 +800,12 @@
 
                 setTimeout(function () {
                     map_pageMap.flyToBounds(locationBounds, {
-                        duration: 1,
+                        duration: 1.5,
                     })
 
                 }, 250);
             }
-        } catch {}
+        } catch (err) {}
     });
 
     var currentMarker_listPage;

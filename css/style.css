@@ -108,7 +108,7 @@ body {
 
 .c-pages {
     position: absolute;
-    top: 39px;
+    top: 38px;
     left: 0;
     width: 100%;
 /*    min-height: 400px;*/
@@ -228,6 +228,10 @@ body {
     vertical-align:top;
     text-align: left;
     
+}
+
+#c-page-list-banner-content-body-panel2{
+    word-wrap: break-word;
 }
 
 #c-page-list-banner-content-body-panel2 .form-group input{
@@ -360,11 +364,12 @@ body {
     align-items: center;
     width: 100%;
     margin-top: -20px;
-    margin-bottom: 20px;
+    margin-bottom: 25px;
 }
 #c-page-list .repSupplementalTitle div {
+    text-align: justify !important;
     display: inline-block;
-    max-width: 400px;
+    max-width: 690px;
     color: #5b616b;
 }
 #c-page-list .repContactChannels {
