@@ -196,6 +196,7 @@
                 try {
                     map_pageList.removeLayer(currentMarker_pageList);
                 } catch (err) {}
+                
                 var apiCoords = apiValues[1]["results"][0]["geometry"]["location"];
                 var latlng_pageList = L.latLng(apiCoords["lat"], apiCoords["lng"]);
                 currentMarker_pageList = new L.marker(latlng_pageList).addTo(map_pageList);
