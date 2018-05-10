@@ -10,8 +10,12 @@ body {
 }
 
 #c-application-header {
+    position: absolute;
+    top:0;
     width: 100%;
-    background-color: white;
+    background-color: transparent;
+    z-index: 50000;
+    height: 39px
 }
 
 #c-header-title-wrapper {
@@ -20,6 +24,7 @@ body {
     padding-top: 10px;
     padding-bottom: 4px;
     font: 14px/16px aerial, helvetica, sans-serif;
+    z-index: 50001;
 }
 
 #c-header-title-text {
@@ -88,24 +93,25 @@ body {
 
 #c-header-tab-menu {
     width: 38px !important;
-    padding-left: 10px !important;
+    padding-left: 12px !important;
     padding-right: 15px !important;
     padding-top: 10px !important;
     padding-bottom: 4px !important;
-    border-right: 2px solid black
+/*    border-right: 2px solid black;*/
+    height: 39px;
 }
 
 #c-header-tab-menu-dropdown {
-    margin-right: -16px;
-    margin-top: 12px;
+    margin-right: -14px;
+    margin-top: 16px;
 }
 
 .c-pages {
     position: absolute;
-    top: 36px;
+    top: 39px;
     left: 0;
     width: 100%;
-    min-height: 400px;
+/*    min-height: 400px;*/
     z-index: 1;
     text-align: center;
 }
@@ -116,6 +122,20 @@ body {
     width: 100%;
     height: 50px;
     z-index: 500;
+}
+
+#c-page-map-headerHelper-left {
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: white;
+    height: 39px;
+    width: calc(100% - 230px);
+    z-index: 40000;
+    border-bottom: 2px solid black;
+}
+#c-header-tab-menu{
+    background-color: white
 }
 
 #c-page-guide-banner {
@@ -138,6 +158,8 @@ body {
 #c-page-map {
     display: none;
     background-color: white;
+    top: 0px !important;
+    z-index: 10;
 }
 
 #c-page-map-body {}
@@ -254,7 +276,10 @@ body {
     color: #dce4ef;
     padding-left: 1px
 }
-.c-page-list-generated-address div div:nth-child(1){
+
+
+#c-page-list .repContactaddressDiv{
+    text-align: left;
     font-weight: 600;
 }
 
@@ -301,6 +326,7 @@ body {
 #c-page-list .repContentWrapper {
     display: inline-block;
     vertical-align:top;
+    max-width: 530px;
 }
 #c-page-list .repInfoWrapper {
     display: inline-block;
@@ -316,6 +342,30 @@ body {
     margin-left: 30px;
     width: 250px;
     overflow-wrap: break-word;
+    word-break: break-word;
+}
+#c-page-list .repSupplementalInfo {
+    display: inline-block;
+    vertical-align:top;
+    width: 100%;
+/*    overflow-wrap: break-word;*/
+    padding-top: 5px;
+    margin-top: 20px;
+    border-top: 1px solid #aeb0b5;
+    color: #5b616b;
+}
+#c-page-list .repSupplementalTitle {
+    text-align: center;
+    align-content: center;
+    align-items: center;
+    width: 100%;
+    margin-top: -20px;
+    margin-bottom: 20px;
+}
+#c-page-list .repSupplementalTitle div {
+    display: inline-block;
+    max-width: 400px;
+    color: #5b616b;
 }
 #c-page-list .repContactChannels {
 }
@@ -331,9 +381,25 @@ body {
     width: 100%;
     cursor: pointer !important;
 }
+#c-page-map .c-address-header{
+    display: none;
+}
 
+#c-page-map .supplemental{
+    display: none !important;
+}
 
 /*rep css for page map*/
+
+#c-page-map #c-page-map-2ListButton{
+    display: block;
+    margin-top: 10px;
+    font-weight: 600;
+}
+
+#c-page-list #c-page-map-2ListButton{
+    display: none;
+}
 
 #c-page-map .repGroupTitle {
     font-size: 18px;
@@ -343,14 +409,17 @@ body {
     border-top: 2px solid black;
 }
 #c-page-map .repCardWrapper {
-    margin-bottom: 0px;
+    margin-bottom: 5px;
     width: 100%;
     text-align: left;
 }
 #c-page-map .repCard {
     display: inline-block;
-    padding-left: 10px;
+    margin-left: 10px;
+    margin-right: 10px;
     margin-bottom: 10px;
+    color: #323a45;
+    width: 100%;
 /*    border-top: 2px solid black;*/
 /*    border-top: 2px solid #0071bc;*/
 /*
@@ -393,44 +462,85 @@ body {
 #c-page-map .repContactPhones {
     display: none;
 }
-#c-page-map .repContactAddress {
+#c-page-map .repCard .repContactAddress {
     display: none;
+}
+#c-page-map .repContactaddressDiv{
+    text-align: left;
+    padding: 10px;
+    margin-top: -10px;
+    display: inline-block;
 }
 #c-page-map .repContactChannels {
 }
 #c-page-map .repOffice {
     font-size: 14;
     color: black;
-    font-weight: 800;
+    font-weight: 600;
+    width: 100%;
+    display: inline-block;
+/*    text-decoration: underline*/
+}
+
+#c-page-map .repNameWrapper {
+    display: inline-block;
+}
+
+#c-page-map .repNameWrapper .glyphicon-user{
+    color: #aeb0b5
 }
 
 
 
 #c-page-map-banner {
     background-color: white;
+/*
     border-top: 2px solid black;
     border-bottom: 2px solid gray;
-    height: 30px !important;
+*/
+    height: 0px !important;
 }
 
 #c-page-map-panel{
     overflow-y: scroll;
     background-color: white;
     position: absolute;
-    top: 30px;
+    top: 39px;
     left: 0;
-    width: 300px;
-    height: calc(100vh - 67px);
+    width: 304px;
+    height: calc(100vh - 41px);
+    text-align: left;
 }
 
+#c-page-map-panel-title{
+    text-align: left;
+    padding: 10px;
+    font-size: 18px;
+    font-weight: 600
+}
+
+#c-page-map-generatedReps{
+    width: 100%
+}
+#c-page-map-placeholderText{
+    text-align: left;
+    padding: 10px
+}
 #c-page-map-mapFrameWrapper{
     background-color: lightgray;
     position: absolute;
-    top: 30px;
+    top: 0px;
     right: 0;
     width: calc(100vw - 320px);
-    height: calc(100vh - 67px);
+    height: 100vh;
+/*    height: calc(100vh - 67px);*/
     border-left: 2px solid gray;
+/*
     border-right: 2px solid gray;
     border-bottom: 2px solid gray;
+*/
+}
+
+#c-page-map-mapFrame .leaflet-top{
+    margin-top:40px;
 }

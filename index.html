@@ -6,6 +6,8 @@
 	<meta name="description" content="OurReps.org Coming Soon!" />
 -->
 
+    <meta name="viewport" content="width=740">
+    
     <link rel="stylesheet" href="lib/leaflet/leaflet.css">
     <link rel="stylesheet" type="text/css" href="lib/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="css/style.css">
@@ -22,11 +24,11 @@
             <div id="c-header-tab-guide" class="c-header-tabs" onclick="">
                 <div>GUIDE</div>
             </div>
-            <div id="c-header-tab-map" class="c-header-tabs" onclick="changePage_guide2map()">
-                <div>MAP</div>
-            </div>
             <div id="c-header-tab-list" class="c-header-tabs" onclick="changePage_guide2list()">
                 <div>LIST</div>
+            </div>
+            <div id="c-header-tab-map" class="c-header-tabs" onclick="changePage_guide2map()">
+                <div>MAP</div>
             </div>
             <div id="c-header-tab-menu" class="c-header-tabs" onclick="">
                 <div class="dropdown">
@@ -57,9 +59,12 @@
     <!-- Map tab-->
     <div id="c-page-map" class="c-pages">
         <div id="c-page-map-banner" class="c-pages-banner"></div>
+        <div id="c-page-map-headerHelper-left"></div>
+        <div id="c-page-map-headerHelper-right"></div>
         <div id="c-page-map-body" class="c-pages-body">
             <div id="c-page-map-panel">
-                <div id="c-page-map-generatedReps"></div>
+                <div id="c-page-map-panel-title">Representation Snapshot</div>
+                <div id="c-page-map-generatedReps"><div id="c-page-map-placeholderText">Click or tap the map to see U.S. representatives for the selected location.</div></div>
             </div>
             <div id="c-page-map-mapFrameWrapper">
                 <div id="c-page-map-mapFrame" style="height: 100%; width: 100%">
@@ -88,7 +93,7 @@
                                 <div>
                                     <span class="glyphicon glyphicon-unchecked"></span>
                                 </div>
-                                <div>
+                                <div id="c-page-list-supplementalToggle">
                                     <span>Show supplementary information</span>
                                 </div>
                             </div>
@@ -113,12 +118,19 @@
         </div>
         <div id="c-page-list-body" class="c-pages-body">
             <div id="c-page-list-content">
-                <div id="c-page-list-generatedReps"></div>
+                <div id="c-page-list-generatedReps">
+                    Enter your address in the menu above.
+                </div>
             </div>
         </div>
     </div>
+    
+    <!-- Dynamic CSS -->
+    <style id="supplementaryCSS">
+        #c-page-list .supplemental{display: none !important}
+    </style>
 
-    <!-- Scripts-->
+    <!-- Scripts -->
     <script src="lib/leaflet/leaflet.js"></script>
     <script src="lib/jquery/jquery-3.3.1.min.js"></script>
     <script src="lib/jqueryui/jquery-ui.min.js"></script>
