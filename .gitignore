@@ -1,3 +1,7 @@
 
+# System
+.DS_Store
+__MACOSX/
+
 js/script2.js
 liveFiles/script.js
